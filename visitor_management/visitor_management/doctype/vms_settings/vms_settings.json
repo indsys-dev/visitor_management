@@ -1,0 +1,53 @@
+{
+ "actions": [],
+ "creation": "2026-03-15 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "default_pass_validity_hours",
+  "contractor_pass_max_days",
+  "otp_expiry_minutes",
+  "allowed_entry_buffer_minutes",
+  "auto_expire_passes",
+  "enable_face_capture",
+  "enable_id_proof_capture",
+  "require_otp_for_approval",
+  "blacklist_check_enabled",
+  "enable_multi_site",
+  "hmac_secret",
+  "pass_email_template",
+  "approval_email_template"
+ ],
+ "fields": [
+  {"default": "8", "fieldname": "default_pass_validity_hours", "fieldtype": "Int", "label": "Default Pass Validity Hours", "reqd": 1},
+  {"default": "30", "fieldname": "contractor_pass_max_days", "fieldtype": "Int", "label": "Contractor Pass Max Days", "reqd": 1},
+  {"default": "10", "fieldname": "otp_expiry_minutes", "fieldtype": "Int", "label": "OTP Expiry Minutes", "reqd": 1},
+  {"default": "30", "fieldname": "allowed_entry_buffer_minutes", "fieldtype": "Int", "label": "Allowed Entry Buffer Minutes"},
+  {"default": "1", "fieldname": "auto_expire_passes", "fieldtype": "Check", "label": "Auto Expire Passes"},
+  {"default": "1", "fieldname": "enable_face_capture", "fieldtype": "Check", "label": "Enable Face Capture"},
+  {"default": "1", "fieldname": "enable_id_proof_capture", "fieldtype": "Check", "label": "Enable ID Proof Capture"},
+  {"default": "1", "fieldname": "require_otp_for_approval", "fieldtype": "Check", "label": "Require OTP For Approval"},
+  {"default": "1", "fieldname": "blacklist_check_enabled", "fieldtype": "Check", "label": "Blacklist Check Enabled"},
+  {"default": "0", "fieldname": "enable_multi_site", "fieldtype": "Check", "label": "Enable Multi Site"},
+  {"fieldname": "hmac_secret", "fieldtype": "Password", "label": "HMAC Secret"},
+  {"fieldname": "pass_email_template", "fieldtype": "Link", "label": "Pass Email Template", "options": "Email Template"},
+  {"fieldname": "approval_email_template", "fieldtype": "Link", "label": "Approval Email Template", "options": "Email Template"}
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-03-15 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Visitor Management",
+ "name": "VMS Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "email": 1, "report": 1, "export": 1, "share": 1},
+  {"role": "VMS Manager", "read": 1, "write": 1, "print": 1, "email": 1, "report": 1, "export": 1},
+  {"role": "Gate Staff", "read": 1},
+  {"role": "Employee", "read": 1}
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

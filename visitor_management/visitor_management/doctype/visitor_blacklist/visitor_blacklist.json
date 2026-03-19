@@ -1,0 +1,36 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "VMS-.YYYY.-.#####",
+ "creation": "2026-03-15 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["visitor_name", "email", "phone", "id_proof_number", "list_type", "reason", "blacklisted_on", "blacklisted_by", "is_active", "site"],
+ "fields": [
+  {"fieldname": "visitor_name", "fieldtype": "Data", "label": "Visitor Name", "in_list_view": 1},
+  {"fieldname": "email", "fieldtype": "Data", "label": "Email", "in_list_view": 1},
+  {"fieldname": "phone", "fieldtype": "Phone", "label": "Phone"},
+  {"fieldname": "id_proof_number", "fieldtype": "Data", "label": "ID Proof Number", "in_list_view": 1},
+  {"fieldname": "list_type", "fieldtype": "Select", "label": "List Type", "options": "Blacklist\nWatchlist", "default": "Blacklist", "in_list_view": 1},
+  {"fieldname": "reason", "fieldtype": "Small Text", "label": "Reason", "reqd": 1},
+  {"fieldname": "blacklisted_on", "fieldtype": "Date", "label": "Blacklisted On", "default": "Today"},
+  {"fieldname": "blacklisted_by", "fieldtype": "Link", "label": "Blacklisted By", "options": "User", "default": "__user"},
+  {"fieldname": "is_active", "fieldtype": "Check", "label": "Is Active", "default": "1", "in_list_view": 1},
+  {"fieldname": "site", "fieldtype": "Link", "label": "Site", "options": "Visitor Site"}
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "module": "Visitor Management",
+ "name": "Visitor Blacklist",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "email": 1, "report": 1, "export": 1, "share": 1},
+  {"role": "VMS Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "email": 1, "report": 1, "export": 1},
+  {"role": "Gate Staff", "read": 1},
+  {"role": "Employee", "read": 1}
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

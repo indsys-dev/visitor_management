@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Visitor Pass</title></head>
+<body style="font-family:Arial,sans-serif;color:#222;">
+  <h2>Visitor Pass {{ pass_number }}</h2>
+  <p>Hello {{ visitor_name }},</p>
+  <p>Your visitor pass has been approved.</p>
+  <ul>
+    <li><strong>Pass Number:</strong> {{ pass_number }}</li>
+    <li><strong>Host:</strong> {{ host_name }}</li>
+    <li><strong>Valid Until:</strong> {{ valid_until }}</li>
+    <li><strong>Allowed Locations:</strong> {{ allowed_locations }}</li>
+  </ul>
+  <p>Please show this QR at the gate:</p>
+  <p><img src="data:image/png;base64,{{ qr_base64 }}" alt="Visitor QR" style="max-width:260px"></p>
+</body>
+</html>

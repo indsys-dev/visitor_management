@@ -1,0 +1,33 @@
+{
+ "actions": [],
+ "creation": "2026-03-15 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["visitor_pass", "location", "site", "log_type", "timestamp", "scanned_by", "device_id", "remarks"],
+ "fields": [
+  {"fieldname": "visitor_pass", "fieldtype": "Link", "label": "Visitor Pass", "options": "Visitor Pass", "in_list_view": 1},
+  {"fieldname": "location", "fieldtype": "Link", "label": "Location", "options": "Visitor Location", "in_list_view": 1},
+  {"fieldname": "site", "fieldtype": "Link", "label": "Site", "options": "Visitor Site", "in_list_view": 1},
+  {"fieldname": "log_type", "fieldtype": "Select", "label": "Log Type", "options": "Entry\nExit\nCheckpoint\nDenied", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "timestamp", "fieldtype": "Datetime", "label": "Timestamp", "default": "Now", "in_list_view": 1},
+  {"fieldname": "scanned_by", "fieldtype": "Link", "label": "Scanned By", "options": "User"},
+  {"fieldname": "device_id", "fieldtype": "Data", "label": "Device ID"},
+  {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "module": "Visitor Management",
+ "name": "Visitor Movement Log",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "VMS Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "Gate Staff", "read": 1, "write": 1, "create": 1},
+  {"role": "Employee", "read": 1}
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

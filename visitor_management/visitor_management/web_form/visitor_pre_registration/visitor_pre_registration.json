@@ -1,0 +1,31 @@
+{
+ "anonymous": 1,
+ "apply_document_permissions": 0,
+ "button_label": "Submit",
+ "creation": "2026-03-15 00:00:00.000000",
+ "doc_type": "Visitor Pass Request",
+ "doctype": "Web Form",
+ "has_field_section": 0,
+ "is_standard": 1,
+ "login_required": 0,
+ "module": "Visitor Management",
+ "name": "visitor_pre_registration",
+ "published": 1,
+ "route": "visitor_pre_registration",
+ "show_attachments": 0,
+ "show_sidebar": 0,
+ "success_message": "Thank you. Your request number is {{ doc.name }}",
+ "title": "Visitor Pre Registration",
+ "web_form_fields": [
+  {"fieldname": "visitor_name", "idx": 1, "label": "Visitor Name", "reqd": 1},
+  {"fieldname": "visitor_email", "idx": 2, "label": "Visitor Email", "reqd": 1},
+  {"fieldname": "visitor_phone", "idx": 3, "label": "Visitor Phone"},
+  {"fieldname": "visitor_company", "idx": 4, "label": "Visitor Company"},
+  {"fieldname": "id_proof_type", "idx": 5, "label": "ID Proof Type"},
+  {"fieldname": "host_employee", "idx": 6, "label": "Host Employee", "reqd": 1},
+  {"fieldname": "visit_purpose", "idx": 7, "label": "Visit Purpose", "reqd": 1},
+  {"fieldname": "expected_visit_date", "idx": 8, "label": "Expected Visit Date", "reqd": 1},
+  {"fieldname": "expected_visit_time", "idx": 9, "label": "Expected Visit Time", "reqd": 1}
+ ],
+ "welcome_message": "Submit your visitor details for gate approval."
+}

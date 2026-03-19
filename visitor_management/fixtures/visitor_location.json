@@ -1,0 +1,41 @@
+[
+ {
+  "access_level": "Open",
+  "building": "A",
+  "docstatus": 0,
+  "doctype": "Visitor Location",
+  "floor": "Ground",
+  "is_active": 1,
+  "location_code": "REC-01",
+  "location_name": "Main Reception",
+  "modified": "2026-03-15 21:08:48.454746",
+  "name": "VMS-2026-00002",
+  "site": "VMS-2026-00001"
+ },
+ {
+  "access_level": "Restricted",
+  "building": "B",
+  "docstatus": 0,
+  "doctype": "Visitor Location",
+  "floor": "2",
+  "is_active": 1,
+  "location_code": "RND-01",
+  "location_name": "R&D Lab",
+  "modified": "2026-03-15 21:08:48.462475",
+  "name": "VMS-2026-00003",
+  "site": "VMS-2026-00001"
+ },
+ {
+  "access_level": "High Security",
+  "building": "C",
+  "docstatus": 0,
+  "doctype": "Visitor Location",
+  "floor": "1",
+  "is_active": 1,
+  "location_code": "SEC-01",
+  "location_name": "Server Vault",
+  "modified": "2026-03-15 21:08:48.467467",
+  "name": "VMS-2026-00004",
+  "site": "VMS-2026-00001"
+ }
+]
