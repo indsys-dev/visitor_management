@@ -1,8 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "VMS-.YYYY.-.#####",
- "creation": "2026-03-15 00:00:00.000000",
+ "autoname": "field:visitor_name",
+ "creation": "2026-03-15 00:00:00",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -31,42 +31,195 @@
   "last_visit"
  ],
  "fields": [
-  {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Active\nSuspended\nExpired\nRevoked", "default": "Active", "in_list_view": 1},
-  {"fieldname": "pass_number", "fieldtype": "Data", "label": "Pass Number", "read_only": 1, "in_list_view": 1},
-  {"fieldname": "site", "fieldtype": "Link", "label": "Site", "options": "Visitor Site", "in_list_view": 1},
-  {"fieldname": "visitor_name", "fieldtype": "Data", "label": "Visitor Name", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "visitor_email", "fieldtype": "Data", "label": "Visitor Email", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "visitor_phone", "fieldtype": "Phone", "label": "Visitor Phone"},
-  {"fieldname": "visitor_company", "fieldtype": "Data", "label": "Visitor Company"},
-  {"fieldname": "id_proof_type", "fieldtype": "Select", "label": "ID Proof Type", "options": "Aadhar\nPassport\nDriving License\nOther"},
-  {"fieldname": "id_proof_number", "fieldtype": "Data", "label": "ID Proof Number"},
-  {"fieldname": "face_photo", "fieldtype": "Attach Image", "label": "Face Photo"},
-  {"fieldname": "id_proof_image", "fieldtype": "Attach Image", "label": "ID Proof Image"},
-  {"fieldname": "host_employee", "fieldtype": "Link", "label": "Host Employee", "options": "Host", "in_list_view": 1},
-  {"fieldname": "pass_type", "fieldtype": "Select", "label": "Pass Type", "options": "Daily\nWeekly\nMonthly\nCustom", "default": "Daily"},
-  {"fieldname": "allowed_days", "fieldtype": "Table MultiSelect", "label": "Allowed Days", "options": "Allowed Day", "get_data": "allowed_day.get_allowed_days", "in_list_view": 1},  
-  {"fieldname": "entry_time_from", "fieldtype": "Time", "label": "Entry Time From"},
-  {"fieldname": "entry_time_to", "fieldtype": "Time", "label": "Entry Time To"},
-  {"fieldname": "valid_from", "fieldtype": "Date", "label": "Valid From", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "valid_until", "fieldtype": "Date", "label": "Valid Until", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "allowed_locations", "fieldtype": "Table", "label": "Allowed Locations", "options": "Visitor Location Access"},
-  {"fieldname": "movement_logs", "fieldtype": "Table", "label": "Movement Logs", "options": "Visitor Movement Log", "read_only": 1},
-  {"fieldname": "qr_code", "fieldtype": "Attach Image", "label": "QR Code", "read_only": 1},
-  {"fieldname": "total_visits", "fieldtype": "Int", "label": "Total Visits", "read_only": 1, "default": "0"},
-  {"fieldname": "last_visit", "fieldtype": "Datetime", "label": "Last Visit", "read_only": 1}
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nSuspended\nExpired\nRevoked"
+  },
+  {
+   "fieldname": "pass_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Pass Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "site",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Site",
+   "options": "Visitor Site"
+  },
+  {
+   "fieldname": "visitor_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Visitor Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "visitor_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Visitor Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "visitor_phone",
+   "fieldtype": "Phone",
+   "label": "Visitor Phone"
+  },
+  {
+   "fieldname": "visitor_company",
+   "fieldtype": "Data",
+   "label": "Visitor Company"
+  },
+  {
+   "fieldname": "id_proof_type",
+   "fieldtype": "Select",
+   "label": "ID Proof Type",
+   "options": "Aadhar\nPassport\nDriving License\nOther"
+  },
+  {
+   "fieldname": "id_proof_number",
+   "fieldtype": "Data",
+   "label": "ID Proof Number"
+  },
+  {
+   "fieldname": "face_photo",
+   "fieldtype": "Attach Image",
+   "label": "Face Photo"
+  },
+  {
+   "fieldname": "id_proof_image",
+   "fieldtype": "Attach Image",
+   "label": "ID Proof Image"
+  },
+  {
+   "fieldname": "host_employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Host Employee",
+   "options": "Host"
+  },
+  {
+   "default": "Daily",
+   "fieldname": "pass_type",
+   "fieldtype": "Select",
+   "label": "Pass Type",
+   "options": "Daily\nWeekly\nMonthly\nCustom"
+  },
+  {
+   "description": "Comma separated: Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+   "fieldname": "allowed_days",
+   "fieldtype": "Small Text",
+   "label": "Allowed Days"
+  },
+  {
+   "fieldname": "entry_time_from",
+   "fieldtype": "Time",
+   "label": "Entry Time From"
+  },
+  {
+   "fieldname": "entry_time_to",
+   "fieldtype": "Time",
+   "label": "Entry Time To"
+  },
+  {
+   "fieldname": "valid_from",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Valid From",
+   "reqd": 1
+  },
+  {
+   "fieldname": "valid_until",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Valid Until",
+   "reqd": 1
+  },
+  {
+   "fieldname": "allowed_locations",
+   "fieldtype": "Table",
+   "label": "Allowed Locations",
+   "options": "Visitor Location Access"
+  },
+  {
+   "fieldname": "movement_logs",
+   "fieldtype": "Table",
+   "label": "Movement Logs",
+   "options": "Visitor Movement Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "qr_code",
+   "fieldtype": "Attach Image",
+   "label": "QR Code",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_visits",
+   "fieldtype": "Int",
+   "label": "Total Visits",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_visit",
+   "fieldtype": "Datetime",
+   "label": "Last Visit",
+   "read_only": 1
+  }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+ "modified": "2026-03-20 17:05:00.043216",
+ "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Recurring Visitor Pass",
- "naming_rule": "Expression",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
-  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "email": 1, "report": 1, "export": 1, "share": 1},
-  {"role": "VMS Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "email": 1, "report": 1, "export": 1},
-  {"role": "Gate Staff", "read": 1, "write": 1, "create": 1},
-  {"role": "Employee", "read": 1}
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "VMS Manager",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Gate Staff",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Employee"
+  }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

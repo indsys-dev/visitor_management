@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "VMS-.YYYY.-.#####",
- "creation": "2026-03-15 00:00:00.000000",
+ "creation": "2026-03-15 00:00:00",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -23,6 +23,7 @@
   "id_proof_number",
   "face_photo",
   "id_proof_image",
+  "id_proof_image_back",
   "capture_face",
   "upload_id_proof",
   "allowed_locations",
@@ -31,50 +32,252 @@
   "otp_hash",
   "otp_sent_on",
   "otp_attempts",
-  "otp_locked"
+  "otp_locked",
+  
+  "amended_from"
  ],
  "fields": [
-  {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Draft\nPending OTP\nPending Approval\nApproved\nRejected\nCancelled", "default": "Draft", "in_list_view": 1, "read_only": 1},
-  {"fieldname": "workflow_state", "fieldtype": "Data", "label": "Workflow State", "read_only": 1, "in_list_view": 1},
-  {"fieldname": "requested_by", "fieldtype": "Select", "label": "Requested By", "options": "Self\nManagement", "default": "Self", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "created_by_employee", "fieldtype": "Link", "label": "Created By Employee", "options": "Host", "depends_on": "eval:doc.requested_by=='Management'"},
-  {"fieldname": "site", "fieldtype": "Link", "label": "Site", "options": "Visitor Site", "in_list_view": 1},
-  {"fieldname": "visitor_name", "fieldtype": "Data", "label": "Visitor Name", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "visitor_email", "fieldtype": "Data", "label": "Visitor Email", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "visitor_phone", "fieldtype": "Data", "label": "Visitor Phone"},
-  {"fieldname": "visitor_company", "fieldtype": "Data", "label": "Visitor Company"},
-  {"fieldname": "host_employee", "fieldtype": "Link", "label": "Host Employee", "options": "Host", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "visit_purpose", "fieldtype": "Small Text", "label": "Visit Purpose", "reqd": 1},
-  {"fieldname": "expected_visit_date", "fieldtype": "Date", "label": "Expected Visit Date", "reqd": 1},
-  {"fieldname": "expected_visit_time", "fieldtype": "Time", "label": "Expected Visit Time", "reqd": 1},
-  {"fieldname": "id_proof_type", "fieldtype": "Select", "label": "ID Proof Type", "options": "Aadhar\nPassport\nDriving License\nOther"},
-  {"fieldname": "id_proof_number", "fieldtype": "Data", "label": "ID Proof Number"},
-  {"fieldname": "face_photo", "fieldtype": "Attach Image", "label": "Face Photo", "read_only": 1},
-  {"fieldname": "id_proof_image", "fieldtype": "Attach Image", "label": "ID Proof Image", "read_only": 1},
-  {"fieldname": "id_proof_image_back", "fieldtype": "Attach Image", "label": "ID Proof Image Back", "read_only": 1},
-  {"fieldname": "capture_face", "fieldtype": "Button", "label": "Capture Face", "options": "capture_face"},
-  {"fieldname": "upload_id_proof", "fieldtype": "Button", "label": "Upload ID Proof", "options": "upload_id_proof"},
-  {"fieldname": "allowed_locations", "fieldtype": "Table", "label": "Allowed Locations", "options": "Visitor Location Access"},
-  {"fieldname": "watchlist_flagged", "fieldtype": "Check", "label": "Watchlist Flagged", "read_only": 1},
-  {"fieldname": "otp_verified", "fieldtype": "Check", "label": "OTP Verified", "read_only": 1},
-  {"fieldname": "otp_hash", "fieldtype": "Data", "label": "OTP Hash", "hidden": 1, "read_only": 1},
-  {"fieldname": "otp_sent_on", "fieldtype": "Datetime", "label": "OTP Sent On", "read_only": 1},
-  {"fieldname": "otp_attempts", "fieldtype": "Int", "label": "OTP Attempts", "default": "0", "read_only": 1},
-  {"fieldname": "otp_locked", "fieldtype": "Check", "label": "OTP Locked", "read_only": 1}
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nPending OTP\nPending Approval\nApproved\nRejected\nCancelled",
+   "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "default": "Self",
+   "fieldname": "requested_by",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Requested By",
+   "options": "Self\nManagement",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.requested_by=='Management'",
+   "fieldname": "created_by_employee",
+   "fieldtype": "Link",
+   "label": "Created By Employee",
+   "options": "Host"
+  },
+  {
+   "fieldname": "site",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Site",
+   "options": "Visitor Site"
+  },
+  {
+   "fieldname": "visitor_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Visitor Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "visitor_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Visitor Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "visitor_phone",
+   "fieldtype": "Phone",
+   "label": "Visitor Phone"
+  },
+  {
+   "fieldname": "visitor_company",
+   "fieldtype": "Data",
+   "label": "Visitor Company"
+  },
+  {
+   "fieldname": "host_employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Host Employee",
+   "options": "Host",
+   "reqd": 1
+  },
+  {
+   "fieldname": "visit_purpose",
+   "fieldtype": "Small Text",
+   "label": "Visit Purpose",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expected_visit_date",
+   "fieldtype": "Date",
+   "label": "Expected Visit Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expected_visit_time",
+   "fieldtype": "Time",
+   "label": "Expected Visit Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "id_proof_type",
+   "fieldtype": "Select",
+   "label": "ID Proof Type",
+   "options": "Aadhar\nPassport\nDriving License\nOther"
+  },
+  {
+   "fieldname": "id_proof_number",
+   "fieldtype": "Data",
+   "label": "ID Proof Number"
+  },
+  {
+   "fieldname": "face_photo",
+   "fieldtype": "Attach Image",
+   "label": "Face Photo",
+   "read_only": 1
+  },
+  {
+   "fieldname": "id_proof_image",
+   "fieldtype": "Attach Image",
+   "label": "ID Proof Image",
+   "read_only": 1
+  },
+  {
+   "fieldname": "id_proof_image_back",
+   "fieldtype": "Attach Image",
+   "label": "ID Proof Image Back",
+   "read_only": 1
+  },
+  {
+   "fieldname": "capture_face",
+   "fieldtype": "Button",
+   "label": "Capture Face",
+   "options": "capture_face"
+  },
+  {
+   "fieldname": "upload_id_proof",
+   "fieldtype": "Button",
+   "label": "Upload ID Proof",
+   "options": "upload_id_proof"
+  },
+  {
+   "fieldname": "allowed_locations",
+   "fieldtype": "Table",
+   "label": "Allowed Locations",
+   "options": "Visitor Location Access"
+  },
+  {
+   "default": "0",
+   "fieldname": "watchlist_flagged",
+   "fieldtype": "Check",
+   "label": "Watchlist Flagged",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "otp_verified",
+   "fieldtype": "Check",
+   "label": "OTP Verified",
+   "read_only": 1
+  },
+  {
+   "fieldname": "otp_hash",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "OTP Hash",
+   "read_only": 1
+  },
+  {
+   "fieldname": "otp_sent_on",
+   "fieldtype": "Datetime",
+   "label": "OTP Sent On",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "otp_attempts",
+   "fieldtype": "Int",
+   "label": "OTP Attempts",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "otp_locked",
+   "fieldtype": "Check",
+   "label": "OTP Locked",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Visitor Pass Request",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
+ "modified": "2026-03-20 15:56:00.261755",
+ "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Visitor Pass Request",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
-  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "print": 1, "email": 1, "report": 1, "export": 1, "share": 1},
-  {"role": "VMS Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "print": 1, "email": 1, "report": 1, "export": 1},
-  {"role": "Gate Staff", "read": 1, "write": 1, "create": 1, "submit": 1},
-  {"role": "Employee", "read": 1, "write": 1, "create": 1, "submit": 1}
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "VMS Manager",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Gate Staff",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Employee",
+   "submit": 1,
+   "write": 1
+  }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

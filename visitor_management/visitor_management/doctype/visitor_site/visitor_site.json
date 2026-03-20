@@ -25,9 +25,10 @@
   },
   {
    "fieldname": "site_code",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Site Code"
+   "label": "Site Code",
+   "options": "Site Branch"
   },
   {
    "fieldname": "address",
@@ -60,7 +61,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-19 19:20:53.143632",
+ "modified": "2026-03-20 17:06:07.239787",
  "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Visitor Site",

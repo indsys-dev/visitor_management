@@ -37,9 +37,10 @@
   },
   {
    "fieldname": "designation",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Designation",
+   "options": "Host Designation",
    "reqd": 1
   },
   {
@@ -52,7 +53,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-19 19:09:20.391750",
+ "modified": "2026-03-20 16:31:44.334043",
  "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Host",

@@ -8,7 +8,7 @@ from frappe import _
 from frappe.utils.file_manager import save_file
 
 MAX_IMAGE_BYTES = 2 * 1024 * 1024
-ALLOWED_FIELDS = {"face_photo", "id_proof_image"}
+ALLOWED_FIELDS = {"face_photo", "id_proof_image", "id_proof_image_back"}
 
 
 @frappe.whitelist()
