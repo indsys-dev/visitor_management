@@ -27,21 +27,25 @@ def create_visitor_pass_request(payload: str | dict) -> dict:
 	else:
 		data = payload or {}
 
-	required = [
+	always_required = [
 		"visitor_name",
 		"visitor_email",
 		"host_employee",
-		"id_proof_number",
 		"visit_purpose",
 		"expected_visit_date",
 		"expected_visit_time",
 	]
-	for key in required:
+	for key in always_required:
 		if not data.get(key):
 			frappe.throw(_("Missing required field: {0}").format(key))
 
-	employee = _get_logged_in_employee()
-	requested_by = "Management" if employee else "Self"
+	# ID proof only required for self-registration
+	if data.get("requested_by") != "Management":
+		if not data.get("id_proof_number"):
+			frappe.throw(_("Missing required field: id_proof_number"))
+
+	requested_by = data.get("requested_by") or "Self"
+	employee = data.get("created_by_employee") if requested_by == "Management" else None
 
 	doc = frappe.get_doc(
 		{
@@ -63,6 +67,8 @@ def create_visitor_pass_request(payload: str | dict) -> dict:
 			"expected_visit_time": data.get("expected_visit_time"),
 		}
 	).insert(ignore_permissions=True)
+
+	doc.submit()
 
 	frappe.db.commit()
 	return {"name": doc.name, "requested_by": doc.requested_by, "created_by_employee": doc.created_by_employee}

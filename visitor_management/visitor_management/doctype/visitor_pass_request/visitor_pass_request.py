@@ -74,10 +74,10 @@ class VisitorPassRequest(Document):
 			)
 
 	def _validate_requested_by(self) -> None:
-		"""Validate management-created requests have a creator employee."""
-		if self.requested_by == "Management" and not self.created_by_employee:
-			frappe.throw(_("Created By Employee is mandatory when Requested By is Management"))
-
+		"""Validate requested_by field is set."""
+		if not self.requested_by:
+			self.requested_by = "Self"
+			
 	def _prefill_repeat_visitor(self) -> None:
 		"""Prefill core visitor details from previous approved request by email."""
 		if not self.visitor_email:

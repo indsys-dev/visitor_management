@@ -1,32 +1,105 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "VMS-.YYYY.-.#####",
- "creation": "2026-03-15 00:00:00.000000",
+ "autoname": "field:site_name",
+ "creation": "2026-03-15 00:00:00",
  "doctype": "DocType",
  "engine": "InnoDB",
- "field_order": ["site_name", "site_code", "address", "city", "country", "site_admin", "is_active"],
+ "field_order": [
+  "site_name",
+  "site_code",
+  "address",
+  "city",
+  "country",
+  "site_admin",
+  "is_active"
+ ],
  "fields": [
-  {"fieldname": "site_name", "fieldtype": "Data", "label": "Site Name", "reqd": 1, "in_list_view": 1},
-  {"fieldname": "site_code", "fieldtype": "Data", "label": "Site Code", "in_list_view": 1},
-  {"fieldname": "address", "fieldtype": "Small Text", "label": "Address"},
-  {"fieldname": "city", "fieldtype": "Data", "label": "City"},
-  {"fieldname": "country", "fieldtype": "Data", "label": "Country"},
-  {"fieldname": "site_admin", "fieldtype": "Link", "label": "Site Admin", "options": "User"},
-  {"default": "1", "fieldname": "is_active", "fieldtype": "Check", "label": "Is Active", "in_list_view": 1}
+  {
+   "fieldname": "site_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Site Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "site_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Site Code"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Data",
+   "label": "Country"
+  },
+  {
+   "fieldname": "site_admin",
+   "fieldtype": "Link",
+   "label": "Site Admin",
+   "options": "User"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active"
+  }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+ "modified": "2026-03-19 19:20:53.143632",
+ "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Visitor Site",
- "naming_rule": "Expression",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
-  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "email": 1, "report": 1, "export": 1, "share": 1},
-  {"role": "VMS Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "email": 1, "report": 1, "export": 1},
-  {"role": "Gate Staff", "read": 1},
-  {"role": "Employee", "read": 1}
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "VMS Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Gate Staff"
+  },
+  {
+   "read": 1,
+   "role": "Employee"
+  }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

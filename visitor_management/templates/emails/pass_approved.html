@@ -1,8 +1,132 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>Pass Approved</title></head>
-<body style="font-family:Arial,sans-serif;color:#222;">
-  <h3>Pass Approved</h3>
-  <p>Hello {{ visitor_name }}, your pass <strong>{{ pass_number }}</strong> is approved.</p>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:Segoe UI,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:30px 10px;">
+<tr>
+<td align="center">
+
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+<!-- HEADER -->
+<tr>
+<td style="background:linear-gradient(135deg,#0a2540,#1a3f6f);padding:30px 25px;border-radius:12px 12px 0 0;text-align:center;">
+  <div style="color:#cbd5e1;font-size:12px;letter-spacing:2px;font-weight:600;">INDSYS</div>
+  <h1 style="margin:8px 0 0;font-size:24px;color:#ffffff;font-weight:700;">Visitor Pass</h1>
+
+  <div style="margin-top:12px;display:inline-block;padding:6px 14px;border-radius:20px;background:rgba(255,255,255,0.15);color:#fff;font-size:12px;font-weight:600;">
+    ✔ Approved
+  </div>
+</td>
+</tr>
+
+<!-- PASS META -->
+<tr>
+<td style="background:#0f766e;padding:12px 25px;color:#ffffff;font-size:13px;">
+  <table width="100%">
+    <tr>
+      <td>Pass No: <strong>{{ pass_number }}</strong></td>
+      <td align="right">Date: <strong>{{ frappe.utils.nowdate() }}</strong></td>
+    </tr>
+  </table>
+</td>
+</tr>
+
+<!-- BODY -->
+<tr>
+<td style="background:#ffffff;padding:25px;border:1px solid #e2e8f0;">
+
+<p style="font-size:14px;color:#334155;margin:0 0 18px;">
+Hello <strong>{{ visitor_name }}</strong>,<br><br>
+Your visitor pass has been approved. Kindly present this email or the QR code at the entry gate.
+</p>
+
+<!-- DETAILS -->
+<table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:20px;">
+<tr style="background:#f8fafc;">
+  <td colspan="2" style="padding:10px;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;">
+    Pass Details
+  </td>
+</tr>
+
+<tr>
+<td style="padding:10px;font-size:12px;color:#64748b;">Pass Number</td>
+<td style="padding:10px;font-size:13px;font-weight:600;">{{ pass_number }}</td>
+</tr>
+
+<tr style="background:#fafafa;">
+<td style="padding:10px;font-size:12px;color:#64748b;">Visitor Name</td>
+<td style="padding:10px;font-size:13px;font-weight:600;">{{ visitor_name }}</td>
+</tr>
+
+<tr>
+<td style="padding:10px;font-size:12px;color:#64748b;">Host</td>
+<td style="padding:10px;font-size:13px;font-weight:600;">{{ doc.host_name }}</td>
+</tr>
+
+<tr style="background:#fafafa;">
+<td style="padding:10px;font-size:12px;color:#64748b;">Valid Until</td>
+<td style="padding:10px;font-size:13px;font-weight:600;color:#0f766e;">{{ frappe.utils.format_datetime(doc.valid_until) }}</td>
+</tr>
+
+{% if allowed_locations %}
+<tr>
+<td style="padding:10px;font-size:12px;color:#64748b;">Allowed Locations</td>
+<td style="padding:10px;font-size:13px;font-weight:600;">{{ allowed_locations }}</td>
+</tr>
+{% endif %}
+
+</table>
+
+<!-- QR -->
+{% if qr_base64 %}
+<table width="100%" style="text-align:center;margin-bottom:20px;">
+<tr>
+<td>
+  <div style="font-size:11px;color:#0f766e;font-weight:600;margin-bottom:10px;">
+    Scan for Verification
+  </div>
+
+  <img src="data:image/png;base64,{{ qr_base64 }}"
+       style="width:140px;height:140px;border:2px solid #e2e8f0;border-radius:6px;" />
+
+  <div style="font-size:11px;color:#94a3b8;margin-top:8px;">
+    Show this QR code at security
+  </div>
+</td>
+</tr>
+</table>
+{% endif %}
+
+<!-- ALERT -->
+<table width="100%" style="background:#fff7ed;border:1px solid #fdba74;border-radius:6px;">
+<tr>
+<td style="padding:12px;font-size:12px;color:#9a3412;">
+<strong>Important:</strong> This pass is valid only for the specified time.
+Please carry a valid ID proof and return the pass at exit.
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+
+<!-- FOOTER -->
+<tr>
+<td style="text-align:center;padding:18px;font-size:11px;color:#94a3b8;">
+This is an automated message from INDSYS Visitor Management System.<br>
+Do not reply to this email.
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
 </body>
 </html>

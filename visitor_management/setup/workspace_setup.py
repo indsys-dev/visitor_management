@@ -130,9 +130,6 @@ def _ensure_workspace() -> None:
 			{"id": "vms-short-1", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass Entry", "col": 3}},
 			{"id": "vms-short-2", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass List", "col": 3}},
 			{"id": "vms-short-3", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass Approval", "col": 3}},
-			{"id": "vms-short-4", "type": "shortcut", "data": {"shortcut_name": "VMS Dashboard", "col": 3}},
-			{"id": "vms-short-5", "type": "shortcut", "data": {"shortcut_name": "Master Desk", "col": 3}},
-			{"id": "vms-short-6", "type": "shortcut", "data": {"shortcut_name": "Master Desk Config", "col": 3}},
 			{"id": "vms-chart-1", "type": "chart", "data": {"chart_name": "Visitor Requests by Day", "col": 4}},
 			{"id": "vms-chart-2", "type": "chart", "data": {"chart_name": "Visitor Passes by Day", "col": 4}},
 			{"id": "vms-chart-3", "type": "chart", "data": {"chart_name": "Recurring Pass Activity", "col": 4}},
@@ -150,8 +147,6 @@ def _ensure_workspace() -> None:
 			{"label": "Visitor Sites", "type": "DocType", "link_to": "Visitor Site", "doc_view": "List", "stats_filter": "[]"},
 			{"label": "Visitor Locations", "type": "DocType", "link_to": "Visitor Location", "doc_view": "List", "stats_filter": "[]"},
 			{"label": "VMS Dashboard", "type": "URL", "url": "/app/vms-dashboard"},
-			{"label": "Master Desk", "type": "URL", "url": "/app/master-desk/home"},
-			{"label": "Master Desk Config", "type": "DocType", "link_to": "Master Desk App", "doc_view": "List", "stats_filter": "[]"},
 			{"label": "Pre-Registration Form", "type": "URL", "url": "/visitor_pre_registration"},
 		],
 	)

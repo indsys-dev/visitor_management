@@ -3,7 +3,7 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "question-sign",
-  "modified": "2026-03-03 10:18:34.555912",
+  "modified": "2026-02-13 16:06:13.435453",
   "name": "Pending",
   "style": "",
   "workflow_state_name": "Pending"
@@ -12,7 +12,7 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "ok-sign",
-  "modified": "2026-03-03 10:18:34.558597",
+  "modified": "2026-02-13 16:06:13.441573",
   "name": "Approved",
   "style": "Success",
   "workflow_state_name": "Approved"
@@ -21,7 +21,7 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "remove",
-  "modified": "2026-03-03 10:18:34.560220",
+  "modified": "2026-02-13 16:06:13.445577",
   "name": "Rejected",
   "style": "Danger",
   "workflow_state_name": "Rejected"

@@ -148,7 +148,7 @@ def generate_visitor_pass(request_name: str) -> dict:
 	pass_doc.db_set("qr_code", file_doc.file_url, update_modified=False)
 	pass_doc.db_set("qr_payload", qr_payload, update_modified=False)
 
-	host_name = frappe.db.get_value("Employee", pass_doc.host_employee, "employee_name") or pass_doc.host_employee
+	host_name = frappe.db.get_value("Host", pass_doc.host_employee, "employee_name") or pass_doc.host_employee
 	context = {
 		"pass_number": pass_doc.name,
 		"visitor_name": pass_doc.visitor_name,

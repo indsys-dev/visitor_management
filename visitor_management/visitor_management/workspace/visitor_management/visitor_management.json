@@ -13,7 +13,7 @@
    "label": "Recurring Pass Activity"
   }
  ],
- "content": "[{\"id\": \"vms-header\", \"type\": \"header\", \"data\": {\"text\": \"<span class='h4'>Visitor Management</span>\", \"col\": 12}}, {\"id\": \"vms-card-1\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Total Visitor Requests\", \"col\": 4}}, {\"id\": \"vms-card-2\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Visitor Passes\", \"col\": 4}}, {\"id\": \"vms-card-3\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Active Recurring Passes\", \"col\": 4}}, {\"id\": \"vms-short-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Visitor Pass Entry\", \"col\": 3}}, {\"id\": \"vms-short-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Visitor Pass List\", \"col\": 3}}, {\"id\": \"vms-short-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Visitor Pass Approval\", \"col\": 3}}, {\"id\": \"vms-short-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"VMS Dashboard\", \"col\": 3}}, {\"id\": \"vms-short-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Master Desk\", \"col\": 3}}, {\"id\": \"vms-short-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Master Desk Config\", \"col\": 3}}, {\"id\": \"vms-chart-1\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Visitor Requests by Day\", \"col\": 4}}, {\"id\": \"vms-chart-2\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Visitor Passes by Day\", \"col\": 4}}, {\"id\": \"vms-chart-3\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Recurring Pass Activity\", \"col\": 4}}]",
+ "content": "[{\"id\":\"vms-header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Visitor Management</span>\",\"col\":12}},{\"id\":\"vms-card-1\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Visitor Requests\",\"col\":4}},{\"id\":\"vms-card-2\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Visitor Passes\",\"col\":4}},{\"id\":\"vms-card-3\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Recurring Passes\",\"col\":4}},{\"id\":\"8ZtVg8Efjj\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"vms-short-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Visitor Pass Entry Self\",\"col\":3}},{\"id\":\"15e1-ayF7E\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Visitor Pass Entry Management \",\"col\":3}},{\"id\":\"vms-short-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Visitor Pass Approval\",\"col\":3}},{\"id\":\"vms-chart-1\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Visitor Requests by Day\",\"col\":4}},{\"id\":\"vms-chart-2\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Visitor Passes by Day\",\"col\":4}},{\"id\":\"vms-chart-3\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Recurring Pass Activity\",\"col\":4}}]",
  "creation": "2026-03-15 21:06:47.431194",
  "custom_blocks": [],
  "docstatus": 0,
@@ -25,7 +25,7 @@
  "is_hidden": 0,
  "label": "Visitor Management",
  "links": [],
- "modified": "2026-03-16 17:37:51.915853",
+ "modified": "2026-03-20 11:16:53.742212",
  "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Visitor Management",
@@ -51,81 +51,23 @@
  "shortcuts": [
   {
    "doc_view": "",
-   "label": "Visitor Pass Entry",
-   "type": "URL",
+   "label": "Visitor Pass Entry Self",
+   "link_to": "visitor-pass-entry-self",
+   "type": "Page",
    "url": "/app/visitor-pass-entry"
   },
   {
-   "doc_view": "",
-   "label": "Visitor Pass List",
-   "type": "URL",
-   "url": "/app/visitor-pass-list"
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Visitor Pass Entry Management ",
+   "link_to": "visitor-pass-entry-management",
+   "type": "Page"
   },
   {
    "doc_view": "",
    "label": "Visitor Pass Approval",
    "type": "URL",
    "url": "/app/visitor-pass-approval"
-  },
-  {
-   "doc_view": "List",
-   "label": "Visitor Pass Requests",
-   "link_to": "Visitor Pass Request",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "List",
-   "label": "Visitor Passes",
-   "link_to": "Visitor Pass",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "List",
-   "label": "Recurring Visitor Passes",
-   "link_to": "Recurring Visitor Pass",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "List",
-   "label": "Visitor Sites",
-   "link_to": "Visitor Site",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "List",
-   "label": "Visitor Locations",
-   "link_to": "Visitor Location",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "VMS Dashboard",
-   "type": "URL",
-   "url": "/app/vms-dashboard"
-  },
-  {
-   "doc_view": "",
-   "label": "Master Desk",
-   "type": "URL",
-   "url": "/app/master-desk/home"
-  },
-  {
-   "doc_view": "List",
-   "label": "Master Desk Config",
-   "link_to": "Master Desk App",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "",
-   "label": "Pre-Registration Form",
-   "type": "URL",
-   "url": "/visitor_pre_registration"
   }
  ],
  "title": "Visitor Management"
