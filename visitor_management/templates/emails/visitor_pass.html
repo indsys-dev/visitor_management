@@ -1,17 +1,111 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>Visitor Pass</title></head>
-<body style="font-family:Arial,sans-serif;color:#222;">
-  <h2>Visitor Pass {{ pass_number }}</h2>
-  <p>Hello {{ visitor_name }},</p>
-  <p>Your visitor pass has been approved.</p>
-  <ul>
-    <li><strong>Pass Number:</strong> {{ pass_number }}</li>
-    <li><strong>Host:</strong> {{ host_name }}</li>
-    <li><strong>Valid Until:</strong> {{ valid_until }}</li>
-    <li><strong>Allowed Locations:</strong> {{ allowed_locations }}</li>
-  </ul>
-  <p>Please show this QR at the gate:</p>
-  <p><img src="data:image/png;base64,{{ qr_base64 }}" alt="Visitor QR" style="width:150px;height:150px;"></p>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4f8;padding:32px 16px;">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+
+<!-- Header -->
+<tr>
+  <td style="background:linear-gradient(135deg,#0d6b5e 0%,#0a5247 100%);border-radius:14px 14px 0 0;padding:0;overflow:hidden;">
+    <table width="100%"><tr>
+      <td style="padding:22px 28px;">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">INDSYS</div>
+        <h1 style="margin:0;font-size:22px;font-weight:900;color:#fff;letter-spacing:1px;">VISITOR PASS</h1>
+        <span style="display:inline-block;margin-top:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;">✓ Approved &amp; Ready</span>
+      </td>
+      <td style="padding:22px 28px;text-align:right;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);">Pass ID</div>
+        <div style="font-size:16px;font-weight:800;color:#fff;font-family:'Courier New',monospace;">{{ pass_number }}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:6px;">Date</div>
+        <div style="font-size:13px;font-weight:700;color:#fff;">{{ generated_date }}</div>
+      </td>
+    </tr></table>
+  </td>
+</tr>
+
+<!-- Body -->
+<tr>
+  <td style="background:#fff;border-left:1px solid #e2e8f0;border-right:1px solid #e2e8f0;padding:26px 28px;">
+
+    <p style="margin:0 0 20px;font-size:14px;color:#334155;line-height:1.6;">
+      Dear <strong style="color:#0f172a;">{{ visitor_name }}</strong>,<br>
+      Your visitor pass has been approved. Your pass is attached to this email as a <strong>PDF</strong> — please download and present it at the entry gate.
+    </p>
+
+    <!-- Pass details table -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin-bottom:22px;">
+      <tr style="background:#f0faf8;">
+        <td colspan="2" style="padding:10px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#0d6b5e;border-bottom:2px solid #0d6b5e;">Pass Details</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#64748b;border-bottom:1px solid #f1f5f9;width:40%;">Pass Number</td>
+        <td style="padding:10px 16px;font-size:13px;font-weight:700;color:#0f172a;border-bottom:1px solid #f1f5f9;">{{ pass_number }}</td>
+      </tr>
+      <tr style="background:#fafbfc;">
+        <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#64748b;border-bottom:1px solid #f1f5f9;">Visitor Name</td>
+        <td style="padding:10px 16px;font-size:13px;font-weight:700;color:#0f172a;border-bottom:1px solid #f1f5f9;">{{ visitor_name }}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#64748b;border-bottom:1px solid #f1f5f9;">Host</td>
+        <td style="padding:10px 16px;font-size:13px;font-weight:700;color:#0f172a;border-bottom:1px solid #f1f5f9;">{{ host_name }}</td>
+      </tr>
+      <tr style="background:#fafbfc;">
+        <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#64748b;border-bottom:1px solid #f1f5f9;">Visit Date</td>
+        <td style="padding:10px 16px;font-size:13px;font-weight:700;color:#0f172a;border-bottom:1px solid #f1f5f9;">{{ visit_date }}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#64748b;border-bottom:1px solid #f1f5f9;">Visit Time</td>
+        <td style="padding:10px 16px;font-size:13px;font-weight:700;color:#0f172a;border-bottom:1px solid #f1f5f9;">{{ visit_time }}</td>
+      </tr>
+      <tr style="background:#fafbfc;">
+        <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#64748b;">Valid Until</td>
+        <td style="padding:10px 16px;font-size:13px;font-weight:700;color:#0d6b5e;">{{ valid_until_date }}</td>
+      </tr>
+    </table>
+
+    <!-- PDF attachment note -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0faf8;border:1px solid #a7f3d0;border-radius:8px;margin-bottom:16px;">
+      <tr>
+        <td style="padding:14px 16px;font-size:13px;color:#065f46;line-height:1.6;">
+          📎 <strong>Your visitor pass PDF is attached to this email.</strong><br>
+          Download it, save it, and show it at the security gate on your visit date.
+        </td>
+      </tr>
+    </table>
+
+    <!-- QR inline -->
+   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0faf8;border:1px solid #a7f3d0;border-radius:8px;margin-bottom:16px;">
+      <tr>
+        <td style="padding:14px 16px;font-size:13px;color:#065f46;line-height:1.6;text-align:center;">
+          📱 <strong>QR code is included in your attached PDF.</strong><br>
+          Open the PDF attachment to view and use your QR code at the gate.
+        </td>
+      </tr>
+    </table>
+
+    <!-- Warning -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;">
+      <tr>
+        <td style="padding:12px 16px;font-size:12px;color:#92400e;line-height:1.5;">
+          ⚠️ This pass is valid only for the specified date and time. Please carry a valid ID proof.
+        </td>
+      </tr>
+    </table>
+
+  </td>
+</tr>
+
+<!-- Footer -->
+<tr>
+  <td style="background:#f8fafc;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:16px 28px;text-align:center;">
+    <p style="margin:0;font-size:11px;color:#94a3b8;">Automated message from INDSYS Visitor Management System. Do not reply.</p>
+  </td>
+</tr>
+
+</table>
+</td></tr>
+</table>
 </body>
 </html>

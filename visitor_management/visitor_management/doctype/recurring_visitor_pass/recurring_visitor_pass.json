@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:visitor_name",
+ "autoname": "RVP-.YYYY.-.#####",
  "creation": "2026-03-15 00:00:00",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -58,8 +58,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Visitor Name",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "visitor_email",
@@ -182,7 +181,7 @@
  "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Recurring Visitor Pass",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

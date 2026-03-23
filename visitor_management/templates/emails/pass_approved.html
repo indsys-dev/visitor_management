@@ -30,7 +30,7 @@
   <table width="100%">
     <tr>
       <td>Pass No: <strong>{{ pass_number }}</strong></td>
-      <td align="right">Date: <strong>{{ frappe.utils.nowdate() }}</strong></td>
+      <td align="right">Date: <strong>{{ frappe.utils.today() }}</strong></td>
     </tr>
   </table>
 </td>
@@ -65,12 +65,12 @@ Your visitor pass has been approved. Kindly present this email or the QR code at
 
 <tr>
 <td style="padding:10px;font-size:12px;color:#64748b;">Host</td>
-<td style="padding:10px;font-size:13px;font-weight:600;">{{ doc.host_name }}</td>
+<td style="padding:10px;font-size:13px;font-weight:600;">{{ host_name }}</td>
 </tr>
 
 <tr style="background:#fafafa;">
 <td style="padding:10px;font-size:12px;color:#64748b;">Valid Until</td>
-<td style="padding:10px;font-size:13px;font-weight:600;color:#0f766e;">{{ frappe.utils.format_datetime(doc.valid_until) }}</td>
+<td style="padding:10px;font-size:13px;font-weight:600;color:#0f766e;">{{ valid_from }} — {{ valid_until }}</td>
 </tr>
 
 {% if allowed_locations %}

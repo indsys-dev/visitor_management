@@ -19,17 +19,13 @@ class VisitorPassRequest(Document):
 		self._check_blacklist_watchlist()
 
 	def on_submit(self) -> None:
-		"""Advance request into OTP or direct approval queue."""
-		require_otp = int(frappe.db.get_single_value("VMS Settings", "require_otp_for_approval") or 1)
-		if require_otp:
-			self.db_set("status", "Pending OTP", update_modified=False)
-			self.db_set("workflow_state", "Pending OTP", update_modified=False)
-			from visitor_management.api.otp import send_otp
-
-			send_otp(self.name)
-		else:
+		"""Set initial status on submit — OTP sending handled by entry page."""
+		if self.requested_by == "Management":
 			self.db_set("status", "Pending Approval", update_modified=False)
 			self.db_set("workflow_state", "Pending Approval", update_modified=False)
+		else:
+			self.db_set("status", "Pending OTP", update_modified=False)
+			self.db_set("workflow_state", "Pending OTP", update_modified=False)
 
 	def on_approve(self) -> None:
 		"""Mark request approved and generate visitor pass."""

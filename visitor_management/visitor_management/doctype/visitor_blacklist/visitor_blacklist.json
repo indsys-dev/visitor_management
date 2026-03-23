@@ -22,8 +22,7 @@
    "fieldname": "visitor_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Visitor Name",
-   "unique": 1
+   "label": "Visitor Name"
   },
   {
    "fieldname": "email",

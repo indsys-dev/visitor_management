@@ -16,6 +16,7 @@ fixtures = [
 	"Workflow",
 	"Workflow State",
 	"Workflow Action Master",
+	"Workspace",
 ]
 
 doctype_js = {

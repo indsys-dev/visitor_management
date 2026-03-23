@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Segoe UI", Arial, sans-serif; background: #fff; }
+
+  .pass-wrap {
+    width: 480px; margin: 20px auto;
+    border: 1.5px solid #d1d5db; border-radius: 12px;
+    overflow: hidden; background: #fff;
+    box-shadow: 0 2px 16px rgba(0,0,0,.10);
+  }
+
+  /* ── HEADER ── */
+  .pass-header {
+    display: flex; align-items: stretch; height: 72px;
+  }
+  .pass-header-left {
+    background: #fff; width: 42%;
+    display: flex; align-items: center; gap: 10px; padding: 0 18px;
+    border-right: none; position: relative;
+  }
+  .pass-header-left::after {
+    content: ""; position: absolute; right: -22px; top: 0;
+    width: 0; height: 0;
+    border-top: 72px solid #fff;
+    border-right: 22px solid transparent;
+    z-index: 2;
+  }
+  .pass-header-right {
+    background: #0d6b5e; flex: 1;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 22px 0 30px; position: relative;
+  }
+  .company-logo {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #1e6aad, #3b9de8);
+    border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-size: 18px; color: #fff; flex-shrink: 0;
+  }
+  .company-name {
+    font-size: 12px; font-weight: 700; color: #1a1a1a;
+    letter-spacing: .3px; line-height: 1.2;
+  }
+  .company-name small { font-size: 9px; color: #64748b; font-weight: 500; display: block; }
+  .pass-title {
+    color: #fff; font-size: 22px; font-weight: 900;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  /* ── ID BAR ── */
+  .pass-idbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 20px; border-bottom: 1.5px solid #e5eaf2;
+    font-size: 13px; color: #374151;
+  }
+  .pass-idbar strong { color: #0f172a; font-size: 14px; }
+  .pass-divider { height: 1px; background: #e5eaf2; margin: 0 20px; }
+
+  /* ── SECTION ── */
+  .pass-section {
+    margin: 0; background: #f9fafb;
+    border: 1px solid #e5eaf2; border-radius: 8px;
+    margin: 10px 16px; overflow: hidden;
+  }
+  .pass-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 14px; border-bottom: 1px solid #f1f5f9;
+    font-size: 13px; color: #1e293b;
+  }
+  .pass-row:last-child { border-bottom: none; }
+  .ri { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; color: #0d6b5e; }
+  .rk { color: #374151; min-width: 60px; font-size: 13px; }
+  .rv { font-weight: 700; color: #0f172a; }
+
+  /* ── GRID 2 ── */
+  .pass-grid2 {
+    display: grid; grid-template-columns: 1fr 1fr;
+    margin: 0 16px; border: 1px solid #e5eaf2;
+    border-radius: 8px; overflow: hidden; background: #f9fafb;
+  }
+  .pass-grid2 .pass-row {
+    border-right: 1px solid #e5eaf2; border-bottom: 1px solid #e5eaf2;
+    background: #f9fafb;
+  }
+  .pass-grid2 .pass-row:nth-child(2n) { border-right: none; }
+  .pass-grid2 .pass-row:nth-last-child(-n+2) { border-bottom: none; }
+
+  /* ── QR SECTION ── */
+  .pass-qr {
+    text-align: center; padding: 16px 20px 18px;
+    border-top: 1px dashed #cbd5e1;
+    margin-top: 10px;
+  }
+  .pass-qr img {
+    width: 180px; height: 180px;
+    border: 2px solid #0d6b5e; border-radius: 8px; display: block; margin: 0 auto;
+  }
+  .pass-qr p {
+    font-size: 12px; font-weight: 700; color: #0d6b5e;
+    margin-top: 8px; text-transform: uppercase; letter-spacing: .5px;
+  }
+
+  .pass-bottom-space { height: 14px; }
+</style>
+</head>
+<body>
+<div class="pass-wrap">
+
+  <!-- HEADER -->
+  <div class="pass-header">
+    <div class="pass-header-left">
+      <div class="company-logo">🏢</div>
+      <div class="company-name">
+        INDSYS
+      </div>
+    </div>
+    <div class="pass-header-right">
+      <div class="pass-title">VISITOR PASS</div>
+    </div>
+  </div>
+
+  <!-- ID BAR -->
+  <div class="pass-idbar">
+    <div>Pass ID: <strong>{{ pass_number }}</strong></div>
+    <div>Date: <strong>{{ generated_date }}</strong></div>
+  </div>
+
+  <div class="pass-divider"></div>
+
+  <!-- VISITOR INFO -->
+  <div class="pass-section">
+    <div class="pass-row">
+      <div class="ri">👤</div>
+      <div class="rk">Name:</div>
+      <div class="rv">{{ visitor_name }}</div>
+    </div>
+    <div class="pass-row">
+      <div class="ri">📞</div>
+      <div class="rk">Mobile:</div>
+      <div class="rv">{{ visitor_phone or "—" }}</div>
+    </div>
+    <div class="pass-row">
+      <div class="ri">🏢</div>
+      <div class="rk">Company:</div>
+      <div class="rv">{{ visitor_company or "—" }}</div>
+    </div>
+  </div>
+
+  <!-- VISIT INFO -->
+  <div class="pass-section">
+    <div class="pass-row">
+      <div class="ri">🎯</div>
+      <div class="rk">Purpose:</div>
+      <div class="rv">{{ visit_purpose or "—" }}</div>
+    </div>
+    <div class="pass-row">
+      <div class="ri">👔</div>
+      <div class="rk">Host:</div>
+      <div class="rv">{{ host_name }}</div>
+    </div>
+    <div class="pass-row">
+      <div class="ri">📍</div>
+      <div class="rk">Site:</div>
+      <div class="rv">{{ site or "—" }}</div>
+    </div>
+  </div>
+
+  <!-- TIMING GRID -->
+  <div class="pass-grid2" style="margin-top:10px;">
+    <div class="pass-row">
+      <div class="ri">📅</div>
+      <div class="rk">Visit Date:</div>
+      <div class="rv">{{ visit_date }}</div>
+    </div>
+    <div class="pass-row">
+      <div class="ri">🕐</div>
+      <div class="rk">Time:</div>
+      <div class="rv">{{ visit_time }}</div>
+    </div>
+    <div class="pass-row">
+      <div class="ri">✅</div>
+      <div class="rk">Valid Until:</div>
+      <div class="rv">{{ valid_until_date }}</div>
+    </div>
+    <div class="pass-row">
+      <div class="ri">🔖</div>
+      <div class="rk">Status:</div>
+      <div class="rv" style="color:#0d6b5e;">Active</div>
+    </div>
+  </div>
+
+  <!-- QR CODE -->
+  <div class="pass-qr">
+    {% if qr_base64 %}
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code">
+    {% else %}
+    <div style="width:180px;height:180px;border:2px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#94a3b8;margin:0 auto;">QR not generated</div>
+    {% endif %}
+    <p>Scan for Verification</p>
+  </div>
+
+  <div class="pass-bottom-space"></div>
+</div>
+</body>
+</html>

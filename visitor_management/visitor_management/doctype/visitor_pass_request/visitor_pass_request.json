@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "VMS-.YYYY.-.#####",
+ "autoname": "VPR-.YYYY.-.#####",
  "creation": "2026-03-15 00:00:00",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -33,7 +33,8 @@
   "otp_sent_on",
   "otp_attempts",
   "otp_locked",
-  
+  "approval_token",
+  "rejection_reason",
   "amended_from"
  ],
  "fields": [
@@ -181,6 +182,13 @@
    "read_only": 1
   },
   {
+   "fieldname": "approval_token",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Approval Token",
+   "read_only": 1
+  },
+  {
    "default": "0",
    "fieldname": "otp_verified",
    "fieldtype": "Check",
@@ -215,6 +223,13 @@
    "read_only": 1
   },
   {
+   "fieldname": "rejection_reason",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Rejection Reason",
+   "read_only": 1
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -228,7 +243,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-20 15:56:00.261755",
+ "modified": "2026-03-23 10:38:18.640264",
  "modified_by": "Administrator",
  "module": "Visitor Management",
  "name": "Visitor Pass Request",
@@ -275,6 +290,11 @@
    "role": "Employee",
    "submit": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Guest"
   }
  ],
  "row_format": "Dynamic",

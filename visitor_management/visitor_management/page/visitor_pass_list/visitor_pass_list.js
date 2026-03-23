@@ -17,107 +17,202 @@ class VisitorPassListPage {
 
 	make_layout() {
 		$(this.page.body).html(`
-			<div class="vpl-wrap">
-				<style>
-					.vpl-wrap { --ink:#111827;--muted:#64748b;--line:#dbe5f2; font-family:"Manrope","Segoe UI",sans-serif; padding:14px; background:linear-gradient(160deg,#f8fbff,#eef4fb); border-radius:16px; }
-					.vpl-toolbar { display:grid; grid-template-columns: 1.1fr .8fr .8fr .8fr .8fr auto; gap:8px; margin-bottom:12px; }
-					.vpl-cards { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin-bottom:12px; }
-					.vpl-card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
-					.vpl-card .k { font-size:12px; color:var(--muted); }
-					.vpl-card .v { font-size:22px; font-weight:800; color:var(--ink); }
-					.vpl-table { background:#fff; border:1px solid var(--line); border-radius:12px; overflow:auto; }
-					.vpl-table table { width:100%; min-width:860px; }
-					.vpl-table th,.vpl-table td { padding:10px; border-bottom:1px solid #edf2f7; }
-					.vpl-badge { font-size:11px; font-weight:700; padding:4px 8px; border-radius:999px; display:inline-block; }
-					.s-Active { background:#dcfce7; color:#166534; }
-					.s-Completed { background:#dbeafe; color:#1d4ed8; }
-					.s-Expired { background:#fee2e2; color:#991b1b; }
-					.s-Draft { background:#f1f5f9; color:#334155; }
-					.s-Rejected { background:#fef3c7; color:#92400e; }
-					@media (max-width:960px){ .vpl-toolbar{grid-template-columns:1fr 1fr;} .vpl-cards{grid-template-columns:1fr 1fr;} }
-				</style>
-				<div class="vpl-toolbar">
-					<input class="form-control" data-f="search" placeholder="${__("Search by name or pass")}" />
-					<select class="form-control" data-f="status"><option value="">${__("All Status")}</option><option>Active</option><option>Completed</option><option>Expired</option><option>Draft</option><option>Rejected</option></select>
-					<input class="form-control" data-f="from" type="date" />
-					<input class="form-control" data-f="to" type="date" />
-					<div data-f="site"></div>
-					<button class="btn btn-primary" data-a="refresh">${__("Refresh")}</button>
-				</div>
-				<div class="vpl-cards"></div>
-				<div class="vpl-table"><table><thead><tr><th>${__("Pass")}</th><th>${__("Visitor")}</th><th>${__("Host")}</th><th>${__("Site")}</th><th>${__("Valid Until")}</th><th>${__("Status")}</th><th>${__("Action")}</th></tr></thead><tbody></tbody></table></div>
+		<div class="vpl-root">
+		<style>
+			.vpl-root{font-family:"Inter","Segoe UI",sans-serif;background:#f0f4f8;min-height:100vh;padding:20px}
+			.vpl-root *{box-sizing:border-box;margin:0;padding:0}
+			.vpl-toolbar{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr auto;gap:8px;margin-bottom:14px}
+			.vpl-toolbar input,.vpl-toolbar select{padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff;color:#0f172a}
+			.vpl-toolbar input:focus,.vpl-toolbar select:focus{border-color:#2563eb}
+			.vpl-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+			.vpl-stat{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+			.vpl-stat .k{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b}
+			.vpl-stat .v{font-size:22px;font-weight:800;color:#0f172a;margin-top:2px}
+			.vpl-table-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+			.vpl-table{width:100%;border-collapse:collapse;min-width:900px}
+			.vpl-table th{padding:11px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#64748b;background:#f8fafc;border-bottom:1px solid #e2e8f0;text-align:left}
+			.vpl-table td{padding:11px 14px;font-size:13px;color:#1e293b;border-bottom:1px solid #f1f5f9}
+			.vpl-table tr:last-child td{border-bottom:none}
+			.vpl-table tr:hover td{background:#f8fafc}
+			.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;display:inline-block}
+			.b-Active{background:#dcfce7;color:#166534}
+			.b-Completed{background:#dbeafe;color:#1d4ed8}
+			.b-Expired{background:#fee2e2;color:#991b1b}
+			.b-Draft{background:#f1f5f9;color:#334155}
+			.b-Rejected{background:#fef3c7;color:#92400e}
+			.b-Pending{background:#fef9c3;color:#854d0e}
+			.vpl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+			.vpl-btn-ghost{background:transparent;color:#2563eb;border:1px solid #cbd5e1}.vpl-btn-ghost:hover{background:#eff6ff}
+			.vpl-btn-refresh{background:#1e3a6e;color:#fff}.vpl-btn-refresh:hover{background:#274d94}
+			.vpl-empty{text-align:center;padding:40px;color:#64748b;font-size:14px}
+			.vpl-reject-reason{font-size:11px;color:#92400e;background:#fffbeb;border:1px solid #fcd34d;border-radius:4px;padding:3px 7px;margin-top:3px;display:inline-block;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+			@media(max-width:800px){.vpl-toolbar{grid-template-columns:1fr 1fr}.vpl-stats{grid-template-columns:1fr 1fr}}
+		</style>
+
+		<div class="vpl-toolbar">
+			<input data-f="search" placeholder="${__("Search by name, pass or host")}">
+			<select data-f="status">
+				<option value="">${__("All Status")}</option>
+				<option value="Active">Active</option>
+				<option value="Completed">Completed</option>
+				<option value="Expired">Expired</option>
+				<option value="Rejected">Rejected</option>
+				<option value="Draft">Draft</option>
+			</select>
+			<input data-f="from" type="date">
+			<input data-f="to" type="date">
+			<button class="vpl-btn vpl-btn-refresh" data-a="refresh">↺ ${__("Refresh")}</button>
+		</div>
+
+		<div class="vpl-stats">
+			<div class="vpl-stat"><div class="k">Total</div><div class="v" id="st-total">—</div></div>
+			<div class="vpl-stat"><div class="k">Active</div><div class="v" id="st-active" style="color:#166534">—</div></div>
+			<div class="vpl-stat"><div class="k">Completed</div><div class="v" id="st-completed" style="color:#1d4ed8">—</div></div>
+			<div class="vpl-stat"><div class="k">Expired</div><div class="v" id="st-expired" style="color:#991b1b">—</div></div>
+			<div class="vpl-stat"><div class="k">Rejected</div><div class="v" id="st-rejected" style="color:#92400e">—</div></div>
+		</div>
+
+		<div class="vpl-table-wrap">
+			<div style="overflow-x:auto">
+				<table class="vpl-table">
+					<thead>
+						<tr>
+							<th>${__("Pass / Request")}</th>
+							<th>${__("Visitor")}</th>
+							<th>${__("Host")}</th>
+							<th>${__("Visit Date")}</th>
+							<th>${__("Valid Until")}</th>
+							<th>${__("Status")}</th>
+							<th>${__("Action")}</th>
+						</tr>
+					</thead>
+					<tbody id="vpl-tbody"></tbody>
+				</table>
 			</div>
-		`);
-		this.$root = $(this.page.body).find(".vpl-wrap");
-		this.site_control = frappe.ui.form.make_control({
-			parent: this.$root.find("[data-f='site']").get(0),
-			df: { fieldtype: "Link", fieldname: "site", options: "Visitor Site", placeholder: "Site" },
-			render_input: true,
-		});
-		this.site_control.refresh();
+		</div>
+		</div>`);
+
+		this.$r = $(this.page.body).find(".vpl-root");
 	}
 
 	bind_events() {
-		this.$root.find("[data-a='refresh']").on("click", () => this.refresh());
-	}
-
-	filters() {
-		const status = this.$root.find("[data-f='status']").val();
-		const from = this.$root.find("[data-f='from']").val();
-		const to = this.$root.find("[data-f='to']").val();
-		const site = this.site_control.get_value();
-		const search = (this.$root.find("[data-f='search']").val() || "").trim().toLowerCase();
-		const filters = {};
-		if (status) filters.pass_status = status;
-		if (site) filters.site = site;
-		if (from && to) filters.valid_from = ["between", [from, to]];
-		return { filters, search };
+		this.$r.find("[data-a='refresh']").on("click", () => this.refresh());
+		this.$r.find("[data-f='search']").on("input", () => this.refresh());
+		this.$r.find("[data-f='status']").on("change", () => this.refresh());
 	}
 
 	async refresh() {
-		const { filters, search } = this.filters();
-		const r = await frappe.call({
-			method: "frappe.client.get_list",
-			args: {
-				doctype: "Visitor Pass",
-				filters,
-				fields: ["name", "visitor_name", "host_employee", "site", "valid_until", "pass_status"],
-				order_by: "modified desc",
-				limit_page_length: 200,
-			},
-		});
-		let rows = r.message || [];
-		if (search) {
-			rows = rows.filter((x) => `${x.name} ${x.visitor_name}`.toLowerCase().includes(search));
-		}
-		this.render_cards(rows);
-		this.render_rows(rows);
-	}
+		const search = (this.$r.find("[data-f='search']").val() || "").trim().toLowerCase();
+		const status_filter = this.$r.find("[data-f='status']").val();
+		const from = this.$r.find("[data-f='from']").val();
+		const to = this.$r.find("[data-f='to']").val();
 
-	render_cards(rows) {
-		const count = (s) => rows.filter((r) => r.pass_status === s).length;
-		const cards = [
-			[__("Total"), rows.length],
-			[__("Active"), count("Active")],
-			[__("Completed"), count("Completed")],
-			[__("Expired"), count("Expired")],
-			[__("Rejected"), count("Rejected")],
+		// Fetch approved visitor passes
+		const pass_filters = {};
+		if (status_filter && status_filter !== "Rejected") pass_filters.pass_status = status_filter;
+		if (from && to) pass_filters.valid_from = ["between", [from, to]];
+
+		// Fetch rejected requests
+		const req_filters = [["status", "=", "Rejected"]];
+
+		const [passes_r, rejected_r] = await Promise.all([
+			frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Visitor Pass",
+					filters: pass_filters,
+					fields: ["name", "visitor_name", "host_employee", "site",
+						"valid_from", "valid_until", "pass_status", "visitor_pass_request"],
+					order_by: "modified desc",
+					limit_page_length: 200,
+				},
+			}),
+			frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Visitor Pass Request",
+					filters: req_filters,
+					fields: ["name", "visitor_name", "host_employee", "site",
+						"expected_visit_date", "status", "rejection_reason"],
+					order_by: "modified desc",	
+					limit_page_length: 200,
+				},
+			}),
+		]);
+
+		let passes = passes_r.message || [];
+		let rejected = rejected_r.message || [];
+
+		// Combine
+		let all_rows = [
+			...passes.map(p => ({ ...p, _type: "pass" })),
+			...(status_filter === "" || status_filter === "Rejected"
+				? rejected.map(r => ({ ...r, _type: "request" }))
+				: []),
 		];
-		this.$root.find(".vpl-cards").html(cards.map((c) => `<div class="vpl-card"><div class="k">${c[0]}</div><div class="v">${c[1]}</div></div>`).join(""));
+
+		// Search filter
+		if (search) {
+			all_rows = all_rows.filter(r =>
+				`${r.name} ${r.visitor_name} ${r.host_employee}`.toLowerCase().includes(search)
+			);
+		}
+
+		// Stats
+		const count = (s) => passes.filter(p => p.pass_status === s).length;
+		this.$r.find("#st-total").text(all_rows.length);
+		this.$r.find("#st-active").text(count("Active"));
+		this.$r.find("#st-completed").text(count("Completed"));
+		this.$r.find("#st-expired").text(count("Expired"));
+		this.$r.find("#st-rejected").text(rejected.length);
+
+		this.render(all_rows);
 	}
 
-	render_rows(rows) {
-		const html = rows.map((r) => `
-			<tr>
-				<td><strong>${frappe.utils.escape_html(r.name)}</strong></td>
-				<td>${frappe.utils.escape_html(r.visitor_name || "")}</td>
-				<td>${frappe.utils.escape_html(r.host_employee || "")}</td>
-				<td>${frappe.utils.escape_html(r.site || "")}</td>
-				<td>${frappe.datetime.str_to_user(r.valid_until || "")}</td>
-				<td><span class="vpl-badge s-${frappe.utils.escape_html(r.pass_status || "Draft")}">${frappe.utils.escape_html(r.pass_status || "Draft")}</span></td>
-				<td><a href="/app/visitor-pass/${r.name}" class="btn btn-xs btn-default">${__("Open")}</a></td>
-			</tr>
-		`).join("");
-		this.$root.find("tbody").html(html || `<tr><td colspan="7" class="text-muted">${__("No records")}</td></tr>`);
+	render(rows) {
+		if (!rows.length) {
+			this.$r.find("#vpl-tbody").html(
+				`<tr><td colspan="7" class="vpl-empty">No records found</td></tr>`
+			);
+			return;
+		}
+
+		const html = rows.map(r => {
+			const is_pass = r._type === "pass";
+			const status = is_pass ? r.pass_status : "Rejected";
+			const badge_class = `b-${status}`;
+			const date_fmt = is_pass
+				? frappe.datetime.str_to_user(r.valid_from || "")
+				: frappe.datetime.str_to_user(r.expected_visit_date || "");
+			const valid_until = is_pass
+				? frappe.datetime.str_to_user(r.valid_until || "")
+				: "—";
+			const link = is_pass
+				? `/app/visitor-pass/${r.name}`
+				: `/app/visitor-pass-request/${r.name}`;
+			const reject_reason = !is_pass && r.rejection_reason
+				? `<div class="vpl-reject-reason" title="${frappe.utils.escape_html(r.rejection_reason)}">
+					⚠ ${frappe.utils.escape_html(r.rejection_reason.substring(0, 40))}${r.rejection_reason.length > 40 ? "…" : ""}
+				</div>`
+				: "";
+
+			return `<tr>
+				<td>
+					<strong>${frappe.utils.escape_html(r.name)}</strong>
+					${is_pass ? "" : '<br><span style="font-size:10px;color:#64748b">Request</span>'}
+				</td>
+				<td>${frappe.utils.escape_html(r.visitor_name || "—")}</td>
+				<td>${frappe.utils.escape_html(r.host_employee || "—")}</td>
+				<td>${date_fmt}</td>
+				<td>${valid_until}</td>
+				<td>
+					<span class="badge ${badge_class}">${status}</span>
+					${reject_reason}
+				</td>
+				<td><a href="${link}" target="_blank" class="vpl-btn vpl-btn-ghost">↗ Open</a></td>
+			</tr>`;
+		}).join("");
+
+		this.$r.find("#vpl-tbody").html(html);
 	}
 }

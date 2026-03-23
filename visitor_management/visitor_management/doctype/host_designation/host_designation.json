@@ -12,8 +12,7 @@
   {
    "fieldname": "designation",
    "fieldtype": "Data",
-   "label": "Designation ",
-   "unique": 1
+   "label": "Designation "
   }
  ],
  "grid_page_length": 50,

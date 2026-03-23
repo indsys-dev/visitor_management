@@ -19,10 +19,8 @@ class RecurringVisitorPass(Document):
 	"""Recurring/contractor visitor pass with periodic access checks."""
 
 	def before_insert(self) -> None:
-		"""Generate pass number and QR before first insert."""
 		if not self.pass_number:
 			self.pass_number = self._make_pass_number()
-		self.generate_recurring_qr()
 
 	def validate(self) -> None:
 		"""Validate date range within configured contractor max limit."""
@@ -33,6 +31,9 @@ class RecurringVisitorPass(Document):
 				frappe.throw(_("Recurring pass cannot exceed {0} days").format(max_days))
 
 	def after_insert(self) -> None:
+		# ✅ Generate QR AFTER insert
+		self.generate_recurring_qr()
+		self.db_set("qr_code", self.qr_code)
 		"""Send welcome email after pass creation."""
 		if self.visitor_email:
 			try:

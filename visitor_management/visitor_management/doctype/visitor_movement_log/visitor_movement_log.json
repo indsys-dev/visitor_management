@@ -21,8 +21,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Visitor Pass",
-   "options": "Visitor Pass",
-   "unique": 1
+   "options": "Visitor Pass"
   },
   {
    "fieldname": "location",

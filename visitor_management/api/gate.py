@@ -11,6 +11,7 @@ import qrcode
 from frappe import _
 from frappe.utils import add_to_date, now_datetime
 from frappe.utils.file_manager import save_file
+from frappe.utils import get_datetime
 
 
 ROLE_SET = {"System Manager", "VMS Manager", "Gate Staff"}
@@ -36,8 +37,7 @@ def _sign_payload(payload: dict) -> str:
 	if not secret:
 		frappe.throw(_("HMAC secret is not configured in VMS Settings"))
 	serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"))
-	return hmac.new(secret.encode("utf-8"), serialized.encode("utf-8"), hashlib.sha256).hexdigest()
-
+	return hmac.HMAC(secret.encode("utf-8"), serialized.encode("utf-8"), hashlib.sha256).hexdigest()
 
 def _build_qr_base64(payload: dict) -> tuple[str, str]:
 	"""Create signed payload and return encoded data + image base64."""
@@ -87,46 +87,43 @@ def _check_blacklist(visitor_email: str | None, id_proof_number: str | None, sit
 
 @frappe.whitelist()
 def generate_visitor_pass(request_name: str) -> dict:
-	"""Create one-time visitor pass, generate QR and email to visitor."""
+	"""Create one-time visitor pass, generate QR, create PDF and email to visitor."""
 	request_doc = frappe.get_doc("Visitor Pass Request", request_name)
-	if not request_doc.has_permission("read"):
-		frappe.throw(_("Not permitted"))
 	if request_doc.status != "Approved":
 		frappe.throw(_("Only approved requests can generate passes"))
-
+		
+	valid_from = get_datetime(f"{request_doc.expected_visit_date} {request_doc.expected_visit_time}")
 	validity_hours = int(_settings_value("default_pass_validity_hours", 8))
-	valid_until = add_to_date(now_datetime(), hours=validity_hours, as_datetime=True)
-	pass_doc = frappe.get_doc(
-		{
-			"doctype": "Visitor Pass",
-			"visitor_pass_request": request_doc.name,
-			"visitor_name": request_doc.visitor_name,
-			"visitor_email": request_doc.visitor_email,
-			"visitor_phone": request_doc.visitor_phone,
-			"visitor_company": request_doc.visitor_company,
-			"host_employee": request_doc.host_employee,
-			"site": request_doc.site,
-			"visit_purpose": request_doc.visit_purpose,
-			"pass_status": "Active",
-			"valid_from": now_datetime(),
-			"valid_until": valid_until,
-			"face_photo": request_doc.face_photo,
-			"id_proof_type": request_doc.id_proof_type,
-			"id_proof_number": request_doc.id_proof_number,
-			"id_proof_image": request_doc.id_proof_image,
-		}
-	).insert(ignore_permissions=True)
+	valid_until = add_to_date(valid_from, hours=validity_hours, as_datetime=True)
+
+	pass_doc = frappe.get_doc({
+		"doctype": "Visitor Pass",
+		"visitor_pass_request": request_doc.name,
+		"visitor_name": request_doc.visitor_name,
+		"visitor_email": request_doc.visitor_email,
+		"visitor_phone": request_doc.visitor_phone,
+		"visitor_company": request_doc.visitor_company,
+		"host_employee": request_doc.host_employee,
+		"site": request_doc.site,
+		"visit_purpose": request_doc.visit_purpose,
+		"pass_status": "Active",
+		"valid_from": valid_from,
+		"valid_until": valid_until,
+		"face_photo": request_doc.face_photo,
+		"id_proof_type": request_doc.id_proof_type,
+		"id_proof_number": request_doc.id_proof_number,
+		"id_proof_image": request_doc.id_proof_image,
+		"id_proof_image_back": request_doc.id_proof_image_back,
+	}).insert(ignore_permissions=True)
 
 	for access in request_doc.allowed_locations or []:
-		pass_doc.append(
-			"allowed_locations",
-			{
-				"location": access.location,
-				"access_type": access.access_type,
-			},
-		)
+		pass_doc.append("allowed_locations", {
+			"location": access.location,
+			"access_type": access.access_type,
+		})
 	pass_doc.save(ignore_permissions=True)
 
+	# ── QR CODE ──────────────────────────────────────────
 	payload = {
 		"pass_number": pass_doc.name,
 		"type": "onetime",
@@ -148,27 +145,74 @@ def generate_visitor_pass(request_name: str) -> dict:
 	pass_doc.db_set("qr_code", file_doc.file_url, update_modified=False)
 	pass_doc.db_set("qr_payload", qr_payload, update_modified=False)
 
+	# ── BUILD EMAIL CONTEXT ───────────────────────────────
 	host_name = frappe.db.get_value("Host", pass_doc.host_employee, "employee_name") or pass_doc.host_employee
+	visit_date = str(pass_doc.valid_from)[:10] if pass_doc.valid_from else "—"
+	visit_time = str(pass_doc.valid_from)[11:16] if pass_doc.valid_from else "—"
+	valid_until_date = str(pass_doc.valid_until)[:10] if pass_doc.valid_until else "—"
+	generated_date = frappe.utils.today()
+
 	context = {
 		"pass_number": pass_doc.name,
 		"visitor_name": pass_doc.visitor_name,
+		"visitor_phone": pass_doc.visitor_phone or "—",
+		"visitor_company": pass_doc.visitor_company or "—",
 		"host_name": host_name,
-		"valid_until": pass_doc.valid_until,
-		"allowed_locations": ", ".join([row.location for row in pass_doc.allowed_locations]),
+		"site": pass_doc.site or "—",
+		"visit_purpose": pass_doc.visit_purpose or "—",
+		"visit_date": visit_date,
+		"visit_time": visit_time,
+		"valid_until_date": valid_until_date,
+		"generated_date": generated_date,
 		"qr_base64": qr_base64,
+		"allowed_locations": ", ".join([row.location for row in pass_doc.allowed_locations]) or "—",
 	}
-	message = frappe.render_template("visitor_management/templates/emails/visitor_pass.html", context)
-	if pass_doc.visitor_email:
-		frappe.sendmail(
-			recipients=[pass_doc.visitor_email],
-			subject=_("Visitor Pass {0}").format(pass_doc.name),
-			message=message,
-			delayed=False,
+
+	# ── GENERATE PDF ──────────────────────────────────────
+	pdf_content = None
+	try:
+		from weasyprint import HTML as WeasyHTML
+		pdf_html = frappe.render_template(
+			"visitor_management/templates/emails/visitor_pass_pdf.html", context
 		)
+		pdf_content = WeasyHTML(string=pdf_html).write_pdf()
+	except ImportError:
+		# WeasyPrint not installed — fallback: save HTML as PDF via Frappe's PDF util
+		try:
+			from frappe.utils.pdf import get_pdf
+			pdf_html = frappe.render_template(
+				"visitor_management/templates/emails/visitor_pass_pdf.html", context
+			)
+			pdf_content = get_pdf(pdf_html)
+		except Exception:
+			frappe.log_error(title="PDF Generation Failed", message=frappe.get_traceback())
+	except Exception:
+		frappe.log_error(title="PDF Generation Failed", message=frappe.get_traceback())
+
+	# ── SEND EMAIL ────────────────────────────────────────
+	if pass_doc.visitor_email:
+		try:
+			email_body = frappe.render_template(
+				"visitor_management/templates/emails/visitor_pass.html", context
+			)
+			attachments = []
+			if pdf_content:
+				attachments = [{
+					"fname": f"Visitor_Pass_{pass_doc.name}.pdf",
+					"fcontent": pdf_content,
+				}]
+			frappe.sendmail(
+				recipients=[pass_doc.visitor_email],
+				subject=_("Your Visitor Pass — {0}").format(pass_doc.name),
+				message=email_body,
+				attachments=attachments,
+				delayed=False,
+			)
+		except Exception:
+			frappe.log_error(title="Pass Email Failed", message=frappe.get_traceback())
 
 	frappe.db.commit()
 	return {"name": pass_doc.name, "qr_file": file_doc.file_url}
-
 
 def _verify_signature(payload: dict) -> None:
 	"""Validate HMAC signature from QR payload."""
@@ -296,12 +340,12 @@ def check_active_passes_on_login(login_manager=None) -> None:
 	"""Notify users about currently active visitors linked to their employee profile."""
 	if not frappe.session.user or frappe.session.user == "Guest":
 		return
-	employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
-	if not employee:
+	host = frappe.db.get_value("Host", {"email": frappe.session.user}, "name")
+	if not host:
 		return
 	active = frappe.get_all(
 		"Visitor Pass",
-		filters={"host_employee": employee, "pass_status": "Active"},
+		filters={"host_employee": host, "pass_status": "Active"},
 		fields=["name", "visitor_name", "valid_until"],
 		limit=5,
 	)

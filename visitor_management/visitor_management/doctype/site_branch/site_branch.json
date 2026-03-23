@@ -12,8 +12,7 @@
   {
    "fieldname": "branch",
    "fieldtype": "Data",
-   "label": "Branch",
-   "unique": 1
+   "label": "Branch"
   }
  ],
  "grid_page_length": 50,

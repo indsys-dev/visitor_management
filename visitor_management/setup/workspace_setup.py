@@ -128,8 +128,10 @@ def _ensure_workspace() -> None:
 			{"id": "vms-card-2", "type": "number_card", "data": {"number_card_name": "Active Visitor Passes", "col": 4}},
 			{"id": "vms-card-3", "type": "number_card", "data": {"number_card_name": "Active Recurring Passes", "col": 4}},
 			{"id": "vms-short-1", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass Entry", "col": 3}},
-			{"id": "vms-short-2", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass List", "col": 3}},
-			{"id": "vms-short-3", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass Approval", "col": 3}},
+			{"id": "vms-short-2", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass Entry self", "col": 3}},
+			{"id": "vms-short-3", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass Entry Management", "col": 3}},
+			{"id": "vms-short-4", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass List", "col": 3}},
+			{"id": "vms-short-5", "type": "shortcut", "data": {"shortcut_name": "Visitor Pass Approval", "col": 3}},
 			{"id": "vms-chart-1", "type": "chart", "data": {"chart_name": "Visitor Requests by Day", "col": 4}},
 			{"id": "vms-chart-2", "type": "chart", "data": {"chart_name": "Visitor Passes by Day", "col": 4}},
 			{"id": "vms-chart-3", "type": "chart", "data": {"chart_name": "Recurring Pass Activity", "col": 4}},
@@ -138,7 +140,8 @@ def _ensure_workspace() -> None:
 	workspace.set(
 		"shortcuts",
 		[
-			{"label": "Visitor Pass Entry", "type": "URL", "url": "/app/visitor-pass-entry"},
+			{"label": "Visitor Pass Entry Management", "type": "Page", "link_to": "visitor-pass-entry-management"},
+			{"label": "Visitor Pass Entry Self", "type": "Page", "link_to": "visitor-pass-entry-self"},
 			{"label": "Visitor Pass List", "type": "URL", "url": "/app/visitor-pass-list"},
 			{"label": "Visitor Pass Approval", "type": "URL", "url": "/app/visitor-pass-approval"},
 			{"label": "Visitor Pass Requests", "type": "DocType", "link_to": "Visitor Pass Request", "doc_view": "List", "stats_filter": "[]"},
@@ -148,7 +151,7 @@ def _ensure_workspace() -> None:
 			{"label": "Visitor Locations", "type": "DocType", "link_to": "Visitor Location", "doc_view": "List", "stats_filter": "[]"},
 			{"label": "VMS Dashboard", "type": "URL", "url": "/app/vms-dashboard"},
 			{"label": "Pre-Registration Form", "type": "URL", "url": "/visitor_pre_registration"},
-		],
+		], 
 	)
 	workspace.set(
 		"charts",
