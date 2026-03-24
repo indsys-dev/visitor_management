@@ -18,216 +18,213 @@ class VisitorPassEntryManagement {
 	}
 
 	make_layout() {
-		$(this.page.body).css({ padding: 0, background: "#f0f4f8" }).html(`
-		<div class="m-root">
+		$(this.page.body).css({ padding: 0, background: "#eef2f7" }).html(`
+		<div class="mg-root">
 		<style>
-			.m-root{font-family:"Inter","Segoe UI",sans-serif;background:#f0f4f8;min-height:100vh;display:flex;flex-direction:column}
-			.m-root *{box-sizing:border-box;margin:0;padding:0}
+			.mg-root { font-family: "Segoe UI", Arial, sans-serif; background: #eef2f7; min-height: 100vh; display: flex; flex-direction: column; }
+			.mg-root * { box-sizing: border-box; margin: 0; padding: 0; }
 
-			/* NAV */
-			.m-nav{background:#1a3a6e;height:54px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(10,30,70,.3);flex-shrink:0;position:sticky;top:0;z-index:100}
-			.m-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-			.m-brand-ico{width:30px;height:30px;background:rgba(255,255,255,.18);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px}
-			.m-brand-name{color:#fff;font-size:14px;font-weight:700}
-			.m-nav-links{display:flex;align-items:center;gap:6px}
-			.m-nav-a{color:rgba(255,255,255,.75);font-size:13px;font-weight:500;padding:6px 12px;border-radius:6px;text-decoration:none;transition:all .15s;cursor:pointer}
-			.m-nav-a:hover{color:#fff;background:rgba(255,255,255,.1)}
-			.m-nav-user{display:flex;align-items:center;gap:7px;color:rgba(255,255,255,.85);font-size:13px;font-weight:500;cursor:pointer;padding:5px 10px;border-radius:6px}
-			.m-nav-user:hover{background:rgba(255,255,255,.1)}
-			.m-nav-user .av{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px}
+			.mg-nav { background: #1e3a6e; height: 56px; padding: 0 28px; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(10,25,60,.25); flex-shrink: 0; }
+			.mg-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+			.mg-brand-ico { width: 32px; height: 32px; background: rgba(255,255,255,.18); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+			.mg-brand-name { color: #fff; font-size: 15px; font-weight: 700; }
 
-			/* BODY */
-			.m-body{flex:1;max-width:820px;margin:0 auto;width:100%;padding:28px 20px 36px}
+			.mg-body { flex: 1; max-width: 860px; margin: 0 auto; width: 100%; padding: 32px 20px 48px; }
 
-			/* TITLE */
-			.m-title{margin-bottom:20px}
-			.m-title h1{font-size:24px;font-weight:800;color:#0f172a;letter-spacing:-.4px;margin-bottom:4px}
-			.m-title p{font-size:13px;color:#64748b}
+			.mg-page-title { margin-bottom: 22px; }
+			.mg-page-title h1 { font-size: 26px; font-weight: 800; color: #0f172a; letter-spacing: -.5px; margin-bottom: 5px; }
+			.mg-page-title p { font-size: 14px; color: #64748b; }
 
-			/* HERO */
-			.m-hero{
-				background:linear-gradient(135deg,#0a2540 0%,#1a3f6f 55%,#1e4d8c 100%);
-				border-radius:12px;height:140px;margin-bottom:22px;
-				position:relative;overflow:hidden;
-				display:flex;align-items:center;padding:0 28px;
-				box-shadow:0 1px 4px rgba(0,0,0,.08),0 6px 18px rgba(0,0,0,.08);
+			.mg-banner {
+				background: linear-gradient(120deg, #0a2540 0%, #1a3f6f 55%, #1e4d8c 100%);
+				border-radius: 14px; height: 160px; margin-bottom: 28px;
+				position: relative; overflow: hidden;
+				box-shadow: 0 1px 4px rgba(0,0,0,.08), 0 6px 20px rgba(0,0,0,.08);
+				display: flex; align-items: center; padding: 0 28px;
 			}
-			.m-hero::after{content:"🏢";position:absolute;right:28px;bottom:-10px;font-size:90px;opacity:.1}
-			.m-hero-text h2{font-size:17px;font-weight:800;color:#fff;margin-bottom:4px;position:relative;z-index:1}
-			.m-hero-text p{font-size:12px;color:rgba(255,255,255,.7);position:relative;z-index:1}
-			.m-hero-badge{margin-top:8px;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:.3px;position:relative;z-index:1}
-			.m-hero-badge .dot{width:5px;height:5px;border-radius:50%;background:#34d399}
+			.mg-banner::after { content: "🏢"; position: absolute; right: 28px; bottom: -10px; font-size: 90px; opacity: .1; }
+			.mg-banner-text { position: relative; z-index: 1; }
+			.mg-banner-text h2 { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+			.mg-banner-text p { font-size: 12px; color: rgba(255,255,255,.7); }
+			.mg-banner-badge { margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 999px; letter-spacing: .3px; }
+			.mg-banner-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: #34d399; }
 
-			/* SUCCESS */
-			.m-success{display:none;background:#fff;border:1px solid #86efac;border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-			.m-success.show{display:block}
-			.m-success-head{background:linear-gradient(135deg,#065f46,#047857);padding:16px 20px;display:flex;align-items:center;gap:10px}
-			.m-success-head .ico{width:34px;height:34px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-			.m-success-head h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:1px}
-			.m-success-head p{font-size:11px;color:rgba(255,255,255,.75)}
-			.m-success-body{padding:16px 20px}
-			.m-ref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#e2e8f0;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:12px}
-			.m-ref-cell{background:#fff;padding:10px 13px}
-			.m-ref-cell .k{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:3px}
-			.m-ref-cell .v{font-size:12px;font-weight:600;color:#0f172a}
-			.m-ref-cell .v a{color:#2563eb;text-decoration:none;font-weight:700}
-			.m-sact{display:flex;gap:8px;flex-wrap:wrap}
+			.mg-card { background: #fff; border: 1px solid #dde5f0; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.05); overflow: hidden; }
+			.mg-card-body { padding: 28px 28px 20px; }
 
-			/* CARD */
-			.m-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);overflow:hidden;margin-bottom:14px}
-			.m-card-body{padding:22px}
+			.mg-sec { font-size: 13px; font-weight: 700; color: #1e3a6e; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+			.mg-sec::after { content: ""; flex: 1; height: 1px; background: #e5eaf2; }
 
-			/* SECTION LABEL */
-			.m-sec{font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-			.m-sec::after{content:"";flex:1;height:1px;background:#e2e8f0}
+			.mg-g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+			.mg-span2 { grid-column: span 2; }
 
-			/* GRID */
-			.m-g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-			.m-span2{grid-column:span 2}
+			.mg-field { display: flex; flex-direction: column; gap: 6px; }
+			.mg-field label { font-size: 13px; font-weight: 600; color: #1e3a6e; }
+			.mg-field label .req { color: #dc2626; margin-left: 2px; }
+			.mg-field input, .mg-field select, .mg-field textarea {
+				width: 100%; padding: 11px 14px;
+				border: 1.5px solid #c8d4e8; border-radius: 8px;
+				font-size: 14px; color: #0f172a; background: #fff;
+				outline: none; font-family: inherit;
+				transition: border-color .15s, box-shadow .15s;
+			}
+			.mg-field input::placeholder, .mg-field textarea::placeholder { color: #94a3b8; }
+			.mg-field input:focus, .mg-field select:focus, .mg-field textarea:focus { border-color: #1e3a6e; box-shadow: 0 0 0 3px rgba(30,58,110,.10); }
+			.mg-field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
 
-			/* FIELD */
-			.m-field{display:flex;flex-direction:column;gap:5px}
-			.m-field label{font-size:12px;font-weight:600;color:#334155}
-			.m-field label .req{color:#be123c;margin-left:2px}
-			.m-field input,.m-field select,.m-field textarea{width:100%;padding:10px 13px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13.5px;color:#0f172a;background:#fff;outline:none;font-family:inherit;transition:border-color .15s,box-shadow .15s}
-			.m-field input::placeholder,.m-field textarea::placeholder{color:#94a3b8}
-			.m-field input:focus,.m-field select:focus,.m-field textarea:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.10)}
-			.m-field textarea{resize:vertical;min-height:90px;line-height:1.6}
+			.mg-link .form-group { margin: 0; }
+			.mg-link .form-control { padding: 11px 14px !important; border: 1.5px solid #c8d4e8 !important; border-radius: 8px !important; font-size: 14px !important; height: auto !important; font-family: inherit !important; color: #0f172a !important; }
+			.mg-link .form-control:focus { border-color: #1e3a6e !important; box-shadow: 0 0 0 3px rgba(30,58,110,.10) !important; }
+			.mg-link .clearfix, .mg-link .help-box { display: none; }
+			.mg-phone-wrap { display: flex; border: 1.5px solid #c8d4e8; border-radius: 8px; overflow: hidden; background: #fff; transition: border-color .15s, box-shadow .15s; }
+			.mg-phone-wrap:focus-within { border-color: #1e3a6e; box-shadow: 0 0 0 3px rgba(30,58,110,.10); }
+			.mg-phone-code { padding: 11px 10px; background: #f1f5f9; border: none; border-right: 1.5px solid #c8d4e8; font-size: 13px; color: #0f172a; font-family: inherit; cursor: pointer; outline: none; width: auto !important; min-width: 90px; flex-shrink: 0; }
+			.mg-phone-num { flex: 1 !important; width: 0 !important; min-width: 0; padding: 11px 14px; border: none; font-size: 14px; color: #0f172a; background: #fff; outline: none; font-family: inherit; }
+			.mg-phone-num::placeholder { color: #94a3b8; }
 
-			/* LINK */
-			.m-link .form-group{margin:0}
-			.m-link .form-control{padding:10px 13px!important;border:1.5px solid #cbd5e1!important;border-radius:8px!important;font-size:13.5px!important;height:auto!important;font-family:inherit!important;color:#0f172a!important}
-			.m-link .form-control:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px rgba(37,99,235,.10)!important}
-			.m-link .clearfix,.m-link .help-box{display:none}
+			.mg-note { display: flex; align-items: flex-start; gap: 10px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #b45309; margin-bottom: 20px; line-height: 1.5; }
 
-			/* INFO NOTE */
-			.m-note{display:flex;align-items:flex-start;gap:8px;background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:11px 14px;font-size:12px;color:#b45309;margin-bottom:16px;line-height:1.5}
+			.mg-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 18px 28px; background: #f8faff; border-top: 1px solid #e5eaf2; }
 
-			/* ACTIONS */
-			.m-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:16px 22px;background:#f8faff;border-top:1px solid #e2e8f0}
+			.mg-btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 26px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; transition: all .15s; }
+			.mg-btn-primary { background: #1e3a6e; color: #fff; box-shadow: 0 2px 8px rgba(30,58,110,.3); }
+			.mg-btn-primary:hover { background: #274d94; transform: translateY(-1px); }
+			.mg-btn-primary:active { transform: none; }
+			.mg-btn-secondary { background: #fff; color: #374151; border: 1.5px solid #c8d4e8; }
+			.mg-btn-secondary:hover { background: #f1f5f9; }
+			.mg-btn:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
 
-			/* BTN */
-			.m-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
-			.m-btn-primary{background:#1a3a6e;color:#fff;box-shadow:0 2px 8px rgba(26,58,110,.28)}
-			.m-btn-primary:hover{background:#2351a3;box-shadow:0 4px 14px rgba(26,58,110,.32);transform:translateY(-1px)}
-			.m-btn-primary:active{transform:none}
-			.m-btn-secondary{background:#fff;color:#334155;border:1.5px solid #cbd5e1}
-			.m-btn-secondary:hover{background:#f1f5f9}
-			.m-btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+			/* SUCCESS CARD */
+			.mg-success { display: none; background: #fff; border: 1px solid #86efac; border-radius: 14px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.05); }
+			.mg-success.show { display: block; }
+			.mg-success-head { background: linear-gradient(135deg, #065f46, #047857); padding: 18px 28px; display: flex; align-items: center; gap: 12px; }
+			.mg-success-head .ico { width: 38px; height: 38px; background: rgba(255,255,255,.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+			.mg-success-head h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+			.mg-success-head p { font-size: 12px; color: rgba(255,255,255,.75); }
+			.mg-success-body { padding: 20px 28px; }
+			.mg-sum { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: #e5eaf2; border: 1px solid #e5eaf2; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+			.mg-sum-cell { background: #fff; padding: 11px 14px; }
+			.mg-sum-cell .k { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #64748b; margin-bottom: 3px; }
+			.mg-sum-cell .v { font-size: 13px; font-weight: 600; color: #0f172a; }
+			.mg-sum-cell .v a { color: #1d4ed8; text-decoration: none; font-weight: 700; }
+			.mg-sact { display: flex; gap: 10px; flex-wrap: wrap; }
 
-			@media(max-width:640px){
-				.m-g2,.m-ref-grid{grid-template-columns:1fr}
-				.m-span2{grid-column:span 1}
+			@media (max-width: 680px) {
+				.mg-g2, .mg-sum { grid-template-columns: 1fr; }
+				.mg-span2 { grid-column: span 1; }
 			}
 		</style>
 
-		<!-- NAV -->
-		<nav class="m-nav">
-			<a class="m-brand" href="/app">
-				<div class="m-brand-ico">🏠</div>
-				<span class="m-brand-name">Visitor Management</span>
+		<nav class="mg-nav">
+			<a class="mg-brand" href="/app">
+				<div class="mg-brand-ico">🏠</div>
+				<span class="mg-brand-name">Indsys</span>
 			</a>
-			<div class="m-nav-links">
-				<a class="m-nav-a" href="/app/vms-dashboard">Dashboard</a>
-				<a class="m-nav-a" href="/app/visitor-pass">Visitor Log</a>
-				<div class="m-nav-user">
-					<div class="av">👤</div>
-					<span id="m-username"></span>
-					<span style="opacity:.5;font-size:10px">▾</span>
-				</div>
-			</div>
 		</nav>
 
-		<div class="m-body">
+		<div class="mg-body">
 
-			<!-- Title -->
-			<div class="m-title">
+			<div class="mg-page-title">
 				<h1>Visitor Pass Request</h1>
 				<p>Register a pre-approved visitor on behalf of management.</p>
 			</div>
 
-			<!-- Hero -->
-			<div class="m-hero">
-				<div class="m-hero-text">
+			<div class="mg-banner">
+				<div class="mg-banner-text">
 					<h2>Management Registration</h2>
-					<p>Pre-approved visitor — no ID capture required.</p>
-					<div class="m-hero-badge"><div class="dot"></div>Management Access</div>
+					<div class="mg-banner-badge"><div class="dot"></div>Management Access</div>
 				</div>
 			</div>
 
-			<!-- Success -->
-			<div class="m-success" id="m-success">
-				<div class="m-success-head">
+			<!-- Success card -->
+			<div class="mg-success" id="mg-success">
+				<div class="mg-success-head">
 					<div class="ico">✓</div>
 					<div>
 						<h3>Request Approved &amp; Pass Issued</h3>
 						<p>Management requests are pre-approved automatically.</p>
 					</div>
 				</div>
-				<div class="m-success-body">
-					<div class="m-ref-grid">
-						<div class="m-ref-cell"><div class="k">Request No.</div><div class="v"><a id="m-ref-no" href="#" target="_blank"></a></div></div>
-						<div class="m-ref-cell"><div class="k">Visitor</div><div class="v" id="m-ref-name"></div></div>
-						<div class="m-ref-cell"><div class="k">Host</div><div class="v" id="m-ref-host"></div></div>
-						<div class="m-ref-cell"><div class="k">Visit Date</div><div class="v" id="m-ref-date"></div></div>
-						<div class="m-ref-cell"><div class="k">Visit Time</div><div class="v" id="m-ref-time"></div></div>
-						<div class="m-ref-cell"><div class="k">Status</div><div class="v" style="color:#065f46;font-weight:700">✓ Approved</div></div>
+				<div class="mg-success-body">
+					<div class="mg-sum">
+						<div class="mg-sum-cell"><div class="k">Request No.</div><div class="v"><a id="mg-ref-no" href="#" target="_blank"></a></div></div>
+						<div class="mg-sum-cell"><div class="k">Visitor</div><div class="v" id="mg-ref-name"></div></div>
+						<div class="mg-sum-cell"><div class="k">Host</div><div class="v" id="mg-ref-host"></div></div>
+						<div class="mg-sum-cell"><div class="k">Visit Date</div><div class="v" id="mg-ref-date"></div></div>
+						<div class="mg-sum-cell"><div class="k">Visit Time</div><div class="v" id="mg-ref-time"></div></div>
+						<div class="mg-sum-cell"><div class="k">Status</div><div class="v" style="color:#065f46;font-weight:700">✓ Approved</div></div>
 					</div>
-					<div class="m-sact">
-						<a id="m-open-btn" href="#" target="_blank" class="m-btn m-btn-primary" style="text-decoration:none;font-size:12px;padding:8px 16px">↗ Open Request</a>
-						<button class="m-btn m-btn-secondary" data-a="reset" style="font-size:12px;padding:8px 16px">+ New Request</button>
+					<div class="mg-sact">
+						<a id="mg-open-btn" href="#" target="_blank" class="mg-btn mg-btn-primary" style="text-decoration:none;font-size:13px;padding:10px 20px">↗ Open Request</a>
+						<button class="mg-btn mg-btn-secondary" data-a="reset" style="font-size:13px;padding:10px 20px">+ New Request</button>
 					</div>
 				</div>
 			</div>
 
 			<!-- Form card -->
-			<div class="m-card">
-				<div class="m-card-body">
+			<div class="mg-card" id="mg-form-card">
+				<div class="mg-card-body">
 
-					<!-- Visitor Info -->
-					<div class="m-sec">Visitor Information</div>
-					<div class="m-g2" style="margin-bottom:16px">
-						<div class="m-field">
+					<div class="mg-g2" style="margin-bottom:20px">
+						<div class="mg-field">
 							<label>Visitor Name <span class="req">*</span></label>
 							<input type="text" data-k="visitor_name" placeholder="Enter visitor's full name">
 						</div>
-						<div class="m-field">
+						<div class="mg-field">
 							<label>Phone Number</label>
-							<input type="tel" data-k="visitor_phone" placeholder="Enter phone number">
+							<div class="mg-phone-wrap">
+								<select id="mg-phone-code" class="mg-phone-code">
+									<option value="+91">🇮🇳 +91</option>
+									<option value="+1">🇺🇸 +1</option>
+									<option value="+44">🇬🇧 +44</option>
+									<option value="+61">🇦🇺 +61</option>
+									<option value="+971">🇦🇪 +971</option>
+									<option value="+65">🇸🇬 +65</option>
+									<option value="+60">🇲🇾 +60</option>
+									<option value="+81">🇯🇵 +81</option>
+									<option value="+49">🇩🇪 +49</option>
+									<option value="+33">🇫🇷 +33</option>
+									<option value="+86">🇨🇳 +86</option>
+									<option value="+92">🇵🇰 +92</option>
+									<option value="+880">🇧🇩 +880</option>
+									<option value="+94">🇱🇰 +94</option>
+									<option value="+977">🇳🇵 +977</option>
+								</select>
+								<input type="tel" id="mg-phone-num" class="mg-phone-num" placeholder="Enter phone number">
+							</div>
 						</div>
-						<div class="m-field">
+						<div class="mg-field">
 							<label>Email Address <span class="req">*</span></label>
 							<input type="email" data-k="visitor_email" placeholder="Enter email address">
 						</div>
-						<div class="m-field">
+						<div class="mg-field">
 							<label>Company / Organisation</label>
 							<input type="text" data-k="visitor_company" placeholder="Enter company name">
 						</div>
 					</div>
 
-					<!-- Visit Details -->
-					<div class="m-sec">Visit Details</div>
-					<div class="m-note">
-						ℹ️ Management-approved visitors do not require Aadhar, face photo or ID proof. The host employee takes responsibility for the visitor.
-					</div>
-					<div class="m-g2">
-						<div class="m-field">
+					<div class="mg-sec">Visit Details</div>
+
+					
+
+					<div class="mg-g2">
+						<div class="mg-field">
 							<label>Host Name <span class="req">*</span></label>
-							<div class="m-link" data-ctrl="host_employee"></div>
+							<div class="mg-link" data-ctrl="host_employee"></div>
 						</div>
-						<div class="m-field">
+						<div class="mg-field">
 							<label>Site</label>
-							<div class="m-link" data-ctrl="site"></div>
+							<div class="mg-link" data-ctrl="site"></div>
 						</div>
-						<div class="m-field">
+						<div class="mg-field">
 							<label>Visit Date <span class="req">*</span></label>
 							<input type="date" data-k="expected_visit_date">
 						</div>
-						<div class="m-field">
+						<div class="mg-field">
 							<label>Visit Time <span class="req">*</span></label>
 							<input type="time" data-k="expected_visit_time">
 						</div>
-						<div class="m-field m-span2">
+						<div class="mg-field mg-span2">
 							<label>Reason for Visit <span class="req">*</span></label>
 							<textarea data-k="visit_purpose" placeholder="Enter the purpose of the visit."></textarea>
 						</div>
@@ -235,17 +232,16 @@ class VisitorPassEntryManagement {
 
 				</div>
 
-				<div class="m-actions">
-					<button class="m-btn m-btn-secondary" data-a="cancel">Cancel</button>
-					<button class="m-btn m-btn-primary" data-a="submit" id="m-submit">Submit Request</button>
+				<div class="mg-actions">
+					<button class="mg-btn mg-btn-secondary" data-a="cancel">Cancel</button>
+					<button class="mg-btn mg-btn-primary" data-a="submit" id="mg-submit">Submit Request</button>
 				</div>
 			</div>
 
 		</div>
 		</div>`);
 
-		this.$r = $(this.page.body).find(".m-root");
-		this.$r.find("#m-username").text(frappe.session.user_fullname || frappe.session.user);
+		this.$r = $(this.page.body).find(".mg-root");
 	}
 
 	make_controls() {
@@ -262,6 +258,12 @@ class VisitorPassEntryManagement {
 		this.host_ctrl.refresh();
 		this.site_ctrl.refresh();
 		this.$r.find("[data-k='expected_visit_date']").val(frappe.datetime.get_today());
+	}
+
+	get_phone() {
+		const code = this.$r.find("#mg-phone-code").val() || "+91";
+		const num = (this.$r.find("#mg-phone-num").val() || "").trim();
+		return num ? code + num : "";
 	}
 
 	bind_events() {
@@ -295,9 +297,12 @@ class VisitorPassEntryManagement {
 				method: "visitor_management.visitor_management.page.visitor_pass_entry.visitor_pass_entry.create_visitor_pass_request",
 				args: {
 					payload: {
-						visitor_name: this.val("visitor_name"), visitor_email: this.val("visitor_email"),
-						visitor_phone: this.val("visitor_phone"), visitor_company: this.val("visitor_company"),
-						host_employee: this.host_ctrl.get_value(), site: this.site_ctrl.get_value(),
+						visitor_name: this.val("visitor_name"),
+						visitor_email: this.val("visitor_email"),
+						visitor_phone: this.get_phone(),
+						visitor_company: this.val("visitor_company"),
+						host_employee: this.host_ctrl.get_value(),
+						site: this.site_ctrl.get_value(),
 						visit_purpose: this.val("visit_purpose"),
 						expected_visit_date: this.val("expected_visit_date"),
 						expected_visit_time: this.val("expected_visit_time"),
@@ -309,6 +314,7 @@ class VisitorPassEntryManagement {
 			this.show_success();
 			frappe.show_alert({ message: __("Request created and approved"), indicator: "green" });
 		} catch (e) {
+			console.error("Submit error:", e);
 			frappe.show_alert({ message: __("Submission failed. Please try again."), indicator: "red" });
 		} finally {
 			btn.prop("disabled", false).text(__("Submit Request"));
@@ -317,27 +323,30 @@ class VisitorPassEntryManagement {
 
 	show_success() {
 		const date = frappe.datetime.str_to_user(this.val("expected_visit_date")) || "—";
-		this.$r.find("#m-success").addClass("show");
-		this.$r.find("[data-a='submit']").prop("disabled", true);
-		this.$r.find("#m-ref-no").attr("href", `/app/visitor-pass-request/${this.docname}`).text(this.docname);
-		this.$r.find("#m-open-btn").attr("href", `/app/visitor-pass-request/${this.docname}`);
-		this.$r.find("#m-ref-name").text(this.val("visitor_name"));
-		this.$r.find("#m-ref-host").text(this.host_ctrl.get_value() || "—");
-		this.$r.find("#m-ref-date").text(date);
-		this.$r.find("#m-ref-time").text(this.val("expected_visit_time") || "—");
-		this.$r.find("#m-success")[0].scrollIntoView({ behavior: "smooth", block: "start" });
+		this.$r.find("#mg-form-card").hide();
+		this.$r.find("#mg-success").addClass("show");
+		this.$r.find("#mg-ref-no").attr("href", `/app/visitor-pass-request/${this.docname}`).text(this.docname);
+		this.$r.find("#mg-open-btn").attr("href", `/app/visitor-pass-request/${this.docname}`);
+		this.$r.find("#mg-ref-name").text(this.val("visitor_name"));
+		this.$r.find("#mg-ref-host").text(this.host_ctrl.get_value() || "—");
+		this.$r.find("#mg-ref-date").text(date);
+		this.$r.find("#mg-ref-time").text(this.val("expected_visit_time") || "—");
+		this.$r.find("#mg-success")[0].scrollIntoView({ behavior: "smooth", block: "start" });
 	}
 
 	val(k) { return (this.$r.find(`[data-k='${k}']`).val() || "").trim(); }
 
 	reset() {
 		this.docname = null;
-		this.$r.find("input, textarea").val("");
+		this.$r.find("input[data-k], textarea").val("");
 		this.$r.find("select").prop("selectedIndex", 0);
 		this.host_ctrl.set_value(""); this.site_ctrl.set_value("");
-		this.$r.find("#m-success").removeClass("show");
+		this.$r.find("#mg-success").removeClass("show");
+		this.$r.find("#mg-form-card").show();
 		this.$r.find("[data-a='submit']").prop("disabled", false).text(__("Submit Request"));
 		this.$r.find("[data-k='expected_visit_date']").val(frappe.datetime.get_today());
+		this.$r.find("#mg-phone-num").val("");
+		this.$r.find("#mg-phone-code").val("+91");
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	}
 }

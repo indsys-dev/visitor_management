@@ -402,6 +402,10 @@ class VisitorPassEntrySelf {
 	async submit() {
 		if (this.docname) return;
 		if (!this.validate()) return;
+		// Ensure CSRF token is ready
+		if (!frappe.csrf_token || frappe.csrf_token === "{{ csrf_token }}") {
+			await new Promise(resolve => setTimeout(resolve, 500));
+		}
 		const btn = this.$r.find("[data-a='submit']").prop("disabled", true).text(__("Submitting..."));
 		try {
 			const r = await frappe.call({
@@ -426,7 +430,9 @@ class VisitorPassEntrySelf {
 			this.show_otp_step();
 			frappe.show_alert({ message: __("Request submitted. Check your email for OTP."), indicator: "green" });
 		} catch (e) {
-			frappe.show_alert({ message: __("Submission failed. Please try again."), indicator: "red" });
+			console.error("Submission error:", e);
+			const msg = e?.responseJSON?.message || e?.message || __("Submission failed. Please try again.");
+			frappe.show_alert({ message: msg, indicator: "red" });
 			this.docname = null;
 		} finally {
 			btn.prop("disabled", false).text(__("Submit Request"));

@@ -21,7 +21,7 @@ class VisitorPassListPage {
 		<style>
 			.vpl-root{font-family:"Inter","Segoe UI",sans-serif;background:#f0f4f8;min-height:100vh;padding:20px}
 			.vpl-root *{box-sizing:border-box;margin:0;padding:0}
-			.vpl-toolbar{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr auto;gap:8px;margin-bottom:14px}
+			.vpl-toolbar{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr auto auto;gap:8px;margin-bottom:14px}
 			.vpl-toolbar input,.vpl-toolbar select{padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff;color:#0f172a}
 			.vpl-toolbar input:focus,.vpl-toolbar select:focus{border-color:#2563eb}
 			.vpl-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
@@ -42,11 +42,12 @@ class VisitorPassListPage {
 			.b-Rejected{background:#fef3c7;color:#92400e}
 			.b-Pending{background:#fef9c3;color:#854d0e}
 			.vpl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
-			.vpl-btn-ghost{background:transparent;color:#2563eb;border:1px solid #cbd5e1}.vpl-btn-ghost:hover{background:#eff6ff}
+			.vpl-btn-ghost{background:#fff;color:#2563eb;border:1px solid #cbd5e1;}.vpl-btn-ghost:hover{background:#eff6ff;color:#1d4ed8;}
 			.vpl-btn-refresh{background:#1e3a6e;color:#fff}.vpl-btn-refresh:hover{background:#274d94}
+			.vpl-btn-open{background:#1e3a6e;color:#fff;border:none;}.vpl-btn-open:hover{background:#274d94;}
 			.vpl-empty{text-align:center;padding:40px;color:#64748b;font-size:14px}
 			.vpl-reject-reason{font-size:11px;color:#92400e;background:#fffbeb;border:1px solid #fcd34d;border-radius:4px;padding:3px 7px;margin-top:3px;display:inline-block;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-			@media(max-width:800px){.vpl-toolbar{grid-template-columns:1fr 1fr}.vpl-stats{grid-template-columns:1fr 1fr}}
+			@media(max-width:900px){.vpl-toolbar{grid-template-columns:1fr 1fr}.vpl-stats{grid-template-columns:1fr 1fr}}
 		</style>
 
 		<div class="vpl-toolbar">
@@ -62,6 +63,7 @@ class VisitorPassListPage {
 			<input data-f="from" type="date">
 			<input data-f="to" type="date">
 			<button class="vpl-btn vpl-btn-refresh" data-a="refresh">↺ ${__("Refresh")}</button>
+			<button class="vpl-btn vpl-btn-ghost" data-a="clear">✖ Clear</button>
 		</div>
 
 		<div class="vpl-stats">
@@ -97,8 +99,25 @@ class VisitorPassListPage {
 
 	bind_events() {
 		this.$r.find("[data-a='refresh']").on("click", () => this.refresh());
+
 		this.$r.find("[data-f='search']").on("input", () => this.refresh());
 		this.$r.find("[data-f='status']").on("change", () => this.refresh());
+
+		// ✅ Fix for date filter
+		this.$r.find("[data-f='from']").on("change", () => this.refresh());
+		this.$r.find("[data-f='to']").on("change", () => this.refresh());
+		this.$r.find("[data-a='clear']").on("click", () => this.clear_filters());
+	}
+
+	clear_filters() {
+		// Reset all fields
+		this.$r.find("[data-f='search']").val("");
+		this.$r.find("[data-f='status']").val("");
+		this.$r.find("[data-f='from']").val("");
+		this.$r.find("[data-f='to']").val("");
+
+		// Refresh data
+		this.refresh();
 	}
 
 	async refresh() {
@@ -107,59 +126,97 @@ class VisitorPassListPage {
 		const from = this.$r.find("[data-f='from']").val();
 		const to = this.$r.find("[data-f='to']").val();
 
-		// Fetch approved visitor passes
-		const pass_filters = {};
-		if (status_filter && status_filter !== "Rejected") pass_filters.pass_status = status_filter;
-		if (from && to) pass_filters.valid_from = ["between", [from, to]];
+		let passes = [];
+		let rejected = [];
 
-		// Fetch rejected requests
-		const req_filters = [["status", "=", "Rejected"]];
+		// ✅ Case 1: Rejected only
+		if (status_filter === "Rejected") {
+			const r = await frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Visitor Pass Request",
+					filters: {
+						status: "Rejected"
+					},
+					fields: [
+						"name", "visitor_name", "host_employee", "site",
+						"expected_visit_date", "status", "rejection_reason"
+					],
+					order_by: "modified desc",
+					limit_page_length: 200,
+				},
+			});
 
-		const [passes_r, rejected_r] = await Promise.all([
-			frappe.call({
+			rejected = r.message || [];
+		}
+
+		// ✅ Case 2: All OR specific pass status
+		else {
+			const pass_filters = {};
+
+			if (status_filter) {
+				pass_filters.pass_status = status_filter;
+			}
+
+			if (from && to) {
+				pass_filters.valid_from = ["between", [from, to]];
+			} else if (from) {
+				pass_filters.valid_from = [">=", from];
+			} else if (to) {
+				pass_filters.valid_from = ["<=", to];
+			}
+
+			const r = await frappe.call({
 				method: "frappe.client.get_list",
 				args: {
 					doctype: "Visitor Pass",
 					filters: pass_filters,
-					fields: ["name", "visitor_name", "host_employee", "site",
-						"valid_from", "valid_until", "pass_status", "visitor_pass_request"],
+					fields: [
+						"name", "visitor_name", "host_employee", "site",
+						"valid_from", "valid_until", "pass_status", "visitor_pass_request"
+					],
 					order_by: "modified desc",
 					limit_page_length: 200,
 				},
-			}),
-			frappe.call({
-				method: "frappe.client.get_list",
-				args: {
-					doctype: "Visitor Pass Request",
-					filters: req_filters,
-					fields: ["name", "visitor_name", "host_employee", "site",
-						"expected_visit_date", "status", "rejection_reason"],
-					order_by: "modified desc",	
-					limit_page_length: 200,
-				},
-			}),
-		]);
+			});
 
-		let passes = passes_r.message || [];
-		let rejected = rejected_r.message || [];
+			passes = r.message || [];
 
-		// Combine
+			// 🔥 ALSO include rejected when "All"
+			if (!status_filter) {
+				const rej = await frappe.call({
+					method: "frappe.client.get_list",
+					args: {
+						doctype: "Visitor Pass Request",
+						filters: { status: "Rejected" },
+						fields: [
+							"name", "visitor_name", "host_employee", "site",
+							"expected_visit_date", "status", "rejection_reason"
+						],
+						order_by: "modified desc",
+						limit_page_length: 200,
+					},
+				});
+				rejected = rej.message || [];
+			}
+		}
+
+		// ✅ Merge
 		let all_rows = [
 			...passes.map(p => ({ ...p, _type: "pass" })),
-			...(status_filter === "" || status_filter === "Rejected"
-				? rejected.map(r => ({ ...r, _type: "request" }))
-				: []),
+			...rejected.map(r => ({ ...r, _type: "request" })),
 		];
 
-		// Search filter
+		// 🔍 Search filter (universal)
 		if (search) {
 			all_rows = all_rows.filter(r =>
 				`${r.name} ${r.visitor_name} ${r.host_employee}`.toLowerCase().includes(search)
 			);
 		}
 
-		// Stats
+		// 📊 Stats (only from passes)
 		const count = (s) => passes.filter(p => p.pass_status === s).length;
+
 		this.$r.find("#st-total").text(all_rows.length);
 		this.$r.find("#st-active").text(count("Active"));
 		this.$r.find("#st-completed").text(count("Completed"));
@@ -209,7 +266,7 @@ class VisitorPassListPage {
 					<span class="badge ${badge_class}">${status}</span>
 					${reject_reason}
 				</td>
-				<td><a href="${link}" target="_blank" class="vpl-btn vpl-btn-ghost">↗ Open</a></td>
+				<td><a href="${link}" target="_blank" class="vpl-btn vpl-btn-open">↗ Open</a></td>
 			</tr>`;
 		}).join("");
 
